@@ -1,6 +1,7 @@
 'use strict';
 
 const Service = require('egg').Service;
+const path = require('path');
 
 class Topics extends Service {
 
