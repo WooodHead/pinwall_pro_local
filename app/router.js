@@ -88,7 +88,7 @@ module.exports = app => {
 
   router.get('website.artifactMedalLike.getMedalLikeDataByUserIdAndArtifactsId', '/website/artifactMedalLike/getMedalLikeDataByUserIdAndArtifactsId', ajaxAuthCheck, controller.website.artifactMedalLike.getMedalLikeDataByUserIdAndArtifactsId);
 
-  router.post('/website/file/uploadFile',ajaxAuthCheck, controller.website.file.uploadFile);
+  router.post('/website/file/uploadFile/:fileType',ajaxAuthCheck, controller.website.file.uploadFile);
 
   //网站接口
   router.resources('website.users', '/website/users',  ajaxAuthCheck, controller.website.users);

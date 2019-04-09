@@ -12,7 +12,7 @@ module.exports = {
   jwtSlot: 'LTAIkUgFNkgDjcr8zklMJfJUoAgdcT',
 
   baseUrl: 'http://127.0.0.1/',
-  basePath:'D:\\',
+  basePath:'D:\\pinwall',
   topicPath: 'topic',
   userPath: 'user',
   imagePath: 'images',
