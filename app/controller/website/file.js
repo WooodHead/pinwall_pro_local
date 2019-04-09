@@ -47,14 +47,10 @@ class FileController extends BaseController {
           fs.mkdirSync(fileTagget);
         }
 
-        //egg-multipart 已经帮我们处理文件二进制对象
-        // node.js 和 php 的上传唯一的不同就是 ，php 是转移一个 临时文件
-        // node.js 和 其他语言（java c#） 一样操作文件流
         const stream = await ctx.getFileStream();
         //新建一个文件名
         const filename = ctx.helper.randomString(8) + path.extname(stream.filename);
         //文件生成绝对路径
-        //当然这里这样市不行的，因为你还要判断一下是否存在文件路径
         const target = path.join(fileTagget, filename);
 
         //生成一个文件写入 文件流

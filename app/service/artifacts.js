@@ -354,7 +354,7 @@ class Artifacts extends Service {
       let result = new Array();
       for (let item of setData.values()) {
         let profileImage = listData[item].dataValues.profileImage;
-        listData[item].dataValues.profileImage = element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, profileImage);
+        listData[item].dataValues.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, profileImage);
 
         result.push(listData[item]);
       }
