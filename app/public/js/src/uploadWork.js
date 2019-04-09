@@ -61,53 +61,67 @@ var container = new Vue({
             let fileSize = files.target.files[0].size/1048576;
             if (fileSize <= 2) {
                 this.$Notice.success({title:'上传中···'});
+                let formdata = new FormData();
+                formdata.append('head', file);
                 $.ajax({
-                    url: '/getSTSSignature/1',
-                    type: 'GET',
-                    success:function(res){
-                        if (res.res.status == 200){
-                            let client = new OSS({
-                          		accessKeyId: res.credentials.AccessKeyId,
-                          		accessKeySecret: res.credentials.AccessKeySecret,
-                          		stsToken: res.credentials.SecurityToken,
-                                bucket:bucket
-                        	});
-                            client.multipartUpload('images/'+ fileName, file).then(function (res) {
-                                let objectPath = 'images/' + fileName;
-                                $.ajax({
-                                    url: config.ajaxUrls.getUrlSignature,
-                                    type: 'GET',
-                                    data:{objectPath:objectPath},
-                                    success:function(res){
-                                        let img = new Image();
-                                        img.src = res;
-                                        img.onload = function(){
-                                            if(img.width == img.height && img.width >= 600 && img.width <= 800){
-                                                that.$Notice.success({title:'上传成功！'});
-                                                that.step1_upload_fengmian_src = res;
-                                                that.dataItem.profileImage = fileName;
-                                            }else{
-                                                that.$Notice.error({title:"图片不符合尺寸要求！，请重新上传……"});
-                                            }
-                                        }
-                                    }
-                                })
-                        	});
-                        }else if (res.res.status == 999) {
-                            that.$Notice.error({
-                                title:res.data,
-                                duration:3,
-                                onClose(){
-                                    window.location.href = "/login";
-                                }
-                            });
-                        }else if(res.status == 500){
-                            that.$Notice.error({
-                                title:"上传出现异常，请刷新界面重试！"
-                            })
-                        }
+                    url: config.ajaxUrls.uploadFile + '/1',
+                    type: 'POST',
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    data: formdata,
+                    success(res){
+                        console.log(res);
                     }
                 })
+
+                // $.ajax({
+                //     url: '/getSTSSignature/1',
+                //     type: 'GET',
+                //     success:function(res){
+                //         if (res.res.status == 200){
+                //             let client = new OSS({
+                //           		accessKeyId: res.credentials.AccessKeyId,
+                //           		accessKeySecret: res.credentials.AccessKeySecret,
+                //           		stsToken: res.credentials.SecurityToken,
+                //                 bucket:bucket
+                //         	});
+                //             client.multipartUpload('images/'+ fileName, file).then(function (res) {
+                //                 let objectPath = 'images/' + fileName;
+                //                 $.ajax({
+                //                     url: config.ajaxUrls.getUrlSignature,
+                //                     type: 'GET',
+                //                     data:{objectPath:objectPath},
+                //                     success:function(res){
+                //                         let img = new Image();
+                //                         img.src = res;
+                //                         img.onload = function(){
+                //                             if(img.width == img.height && img.width >= 600 && img.width <= 800){
+                //                                 that.$Notice.success({title:'上传成功！'});
+                //                                 that.step1_upload_fengmian_src = res;
+                //                                 that.dataItem.profileImage = fileName;
+                //                             }else{
+                //                                 that.$Notice.error({title:"图片不符合尺寸要求！，请重新上传……"});
+                //                             }
+                //                         }
+                //                     }
+                //                 })
+                //         	});
+                //         }else if (res.res.status == 999) {
+                //             that.$Notice.error({
+                //                 title:res.data,
+                //                 duration:3,
+                //                 onClose(){
+                //                     window.location.href = "/login";
+                //                 }
+                //             });
+                //         }else if(res.status == 500){
+                //             that.$Notice.error({
+                //                 title:"上传出现异常，请刷新界面重试！"
+                //             })
+                //         }
+                //     }
+                // })
             }else{
                 this.$Notice.error({title:"图片大小不符，请重新选择"});
             }

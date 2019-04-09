@@ -20,6 +20,7 @@ var config = {
         // uploadWork
         getUrlSignature:'/getUrlSignature',
         getSTSSignature:'/getSTSSignature/:type',
+        uploadFile:"/website/file/uploadFile",
         // artifacts
         getArtifacts:'/website/artifacts',
         getArtifactsWithId:'/website/artifacts/:id',
