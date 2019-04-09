@@ -339,7 +339,7 @@ class Artifacts extends Service {
     if(max < limit){
         listData.forEach((element, index)=>{
             let profileImage = element.profileImage;
-            element.profileImage = helper.signatureUrl(helper.imagePath + profileImage, "thumb_360_360");
+            element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.profileImage);
         });
 
         return listData;
@@ -354,7 +354,8 @@ class Artifacts extends Service {
       let result = new Array();
       for (let item of setData.values()) {
         let profileImage = listData[item].dataValues.profileImage;
-        listData[item].dataValues.profileImage = helper.signatureUrl(helper.imagePath + profileImage, "thumb_360_360");
+        listData[item].dataValues.profileImage = element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, profileImage);
+
         result.push(listData[item]);
       }
 
