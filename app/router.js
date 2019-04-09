@@ -15,19 +15,12 @@ module.exports = app => {
   router.get('/index', controller.home.index);
   router.get('/login', controller.home.login);
   router.get('/relogin', controller.home.relogin);
-  router.get('/wxRelogin', controller.home.wxRelogin);
-  router.get('/wxRelogin', controller.home.wxRelogin);
-  router.get('/wxCompleteInfo', controller.home.wxCompleteInfo);
 
   router.post('/login',app.passport.authenticate('local', {
        successReturnToOrRedirect : '/index',successFlash: true,
        failureRedirect: '/relogin',failureFlash: true }));
 
-  router.get('/loginByWeixin',app.passport.authenticate('loginByWeixin', {
-       successReturnToOrRedirect : '/website/users/bindWeixin',successFlash: true,
-       failureRedirect: '/relogin',failureFlash: true,state: 'hello-pinwall', }));
   router.get('/logout', controller.home.logout);
-  router.get('/wxLogin', controller.website.users.wxLogin);
 
   router.get('/upload', controller.home.upload);
   router.get('/uploadWork/:jobTag', pageAuthCheck, controller.home.uploadWork);
@@ -51,8 +44,6 @@ module.exports = app => {
   router.get('/createTopics', pageAuthCheck, controller.home.createTopics);
   router.get("/completeInfo", controller.home.completeInfo);
   router.get('/updatePwd',controller.home.updatePwd);
-  router.get('/getSTSSignature/:fileType', ajaxAuthCheck, controller.website.alioss.getSTSSignature);
-  router.get('/getUrlSignature', controller.website.alioss.getUrlSignature);
   router.get('/getCaptcha',controller.website.users.getCaptcha);
   router.get('/checkCaptcha',controller.website.users.checkCaptcha);
   router.get('/sms/createSmsMessage',controller.website.smsMessage.createSmsMessage);
@@ -73,9 +64,6 @@ module.exports = app => {
 
   router.put('website.users.updateAcviveByUserId', '/website/users/updateAcviveByUserId/:id', ajaxAuthCheck, controller.website.users.updateAcviveByUserId);
 
-  router.get('website.users.bindWeixin', '/website/users/bindWeixin', controller.website.users.bindWeixin);
-  router.post('website.users.bindWeixinInfoByMobile', '/website/users/bindWeixinInfoByMobile', controller.website.users.bindWeixinInfoByMobile);
-  router.post('website.users.createWxUser', '/website/users/createWxUser', controller.website.users.createWxUser);
   router.post('website.users.createUser', '/website/users/createUser', controller.website.users.createUser);
   router.put('website.users.updatePwd', '/website/users/updatePwd', controller.website.users.updatePwd);
   router.put('website.users.updatePwdWithMobileAndSmsCode', '/website/users/updatePwdWithMobileAndSmsCode', controller.website.users.updatePwdWithMobileAndSmsCode);
@@ -100,6 +88,7 @@ module.exports = app => {
 
   router.get('website.artifactMedalLike.getMedalLikeDataByUserIdAndArtifactsId', '/website/artifactMedalLike/getMedalLikeDataByUserIdAndArtifactsId', ajaxAuthCheck, controller.website.artifactMedalLike.getMedalLikeDataByUserIdAndArtifactsId);
 
+  router.post('/website/file/uploadFile',ajaxAuthCheck, controller.website.file.uploadFile);
 
   //网站接口
   router.resources('website.users', '/website/users',  ajaxAuthCheck, controller.website.users);
@@ -111,24 +100,5 @@ module.exports = app => {
   router.resources('website.artifactScores', '/website/artifactScores', vipAuthCheck, controller.website.artifactScores);
   router.resources('website.artifactMedalLike', '/website/artifactMedalLike', ajaxAuthCheck, controller.website.artifactMedalLike);
 
-  //微信接口
-  router.get('/wx/artifacts/getMedalDataByRandom/:limit', controller.wx.artifacts.getMedalDataByRandom);
-  router.get('/wx/artifacts/getArtifactById/:id', controller.wx.artifacts.getArtifactById);
-  router.get('/wx/artifacts/findCommentsByArtifactIdWithPage', controller.wx.artifacts.findCommentsByArtifactIdWithPage);
-  router.get('/wx/artifacts/getMedalLikeDataByUserIdAndArtifactsId', controller.wx.artifacts.getMedalLikeDataByUserIdAndArtifactsId);
-
-  router.get('/wx/topics/getTopicAndArtifactById', controller.wx.topics.getTopicAndArtifactById);
-  router.get('/wx/topics/findArtifactByTopicId', controller.wx.topics.findArtifactByTopicId);
-  router.post('wx.users.createWxUser', '/wx/users/createWxUser', controller.wx.users.createWxUser);
-  router.post('wx.users.bindWeixinInfoByMobile', '/wx/users/bindWeixinInfoByMobile', controller.wx.users.bindWeixinInfoByMobile);
-  router.get('wx.users.refreshUserInfo', '/wx/users/refreshUserInfo/:id', controller.wx.users.refreshUserInfo);
-
-  router.get('/wx/users/getWxCode', controller.wx.users.getWxCode);
-  router.post('/wx/artifacts/createComment', controller.wx.artifacts.createComment);
-  router.post('/wx/artifacts/createScore', controller.wx.artifacts.createScore);
-  router.post('/wx/artifacts/createLike', controller.wx.artifacts.createLike);
-  router.get('/wx/artifacts/getPersonalJobByUserId', controller.wx.artifacts.getPersonalJobByUserId);
-
-  router.resources('wx.topics', '/wx/topics',  controller.wx.topics);
 
 };

@@ -1,6 +1,5 @@
 'use strict';
 
-let OSS = require('ali-oss');
 const crypto = require('crypto');
 
 module.exports = {
@@ -10,95 +9,24 @@ module.exports = {
     return parseInt(string) || 0;
   },
 
-  aliConfig: () => {
-    const alioss = exports = {};
-
-    alioss.region = 'oss-cn-hangzhou';
-    alioss.AccessKeyId = 'LTAIsvXXw2cmRUG2';
-    alioss.AccessKeySecret = 'fs0sVuCJm0AeQi2XduYwdF0EqzL5Rc';
-    alioss.endpoint = 'oss-cn-hangzhou.aliyuncs.com';
-    alioss.PolicyFile = 'policy/all_policy.txt';
-    alioss.RoleArn = 'acs:ram::1455326322404332:role/cidic-oss-role';
-    alioss.TokenExpireTime = '3600';
-    alioss.bucket = 'pinwall-pro';
-
-    return alioss;
-  },
-
   jwtSlot: 'LTAIkUgFNkgDjcr8zklMJfJUoAgdcT',
-  wx_secret: '4ba159f4548a64e8eb5567e860c4f067',
-  wx_appid: 'wxe7bac3b26bdd1205',
 
-  imagePath: 'images/',
-  othersPath: 'others/',
-  pdfPath: 'pdf/',
-  rar_zipPath: 'rar_zip/',
-  videoPath: 'video/',
+  baseUrl: 'http://127.0.0.1/',
+  basePath:'D:\\',
+  topicPath: 'topic',
+  userPath: 'user',
+  imagePath: 'images',
+  othersPath: 'others',
+  pdfPath: 'pdf',
+  rar_zipPath: 'rar_zip',
+  videoPath: 'video',
+
 
   es_index:'pinwall_pro',
   es_type:'artifacts',
 
   es_search_suggest_index:'pinwall_pro_search_suggest',
   es_search_suggest_type:'pinwall_pro_suggest',
-
-  signatureUrl(objectPath,thumbName){
-    const config = this.aliConfig();
-    let client = new OSS({
-      region: config.region,
-      accessKeyId: config.AccessKeyId,
-      accessKeySecret: config.AccessKeySecret,
-      bucket: config.bucket,
-    });
-
-    if (typeof(thumbName) == "undefined"){
-      return client.signatureUrl(objectPath, {expires: 3600});
-    }
-    else{
-      return client.signatureUrl(objectPath, {expires: 3600,process : 'style/'+thumbName});
-    }
-
-  },
-
-  async deleteOssObject(objectPath){
-    const config = this.aliConfig();
-    let client = new OSS({
-      region: config.region,
-      accessKeyId: config.AccessKeyId,
-      accessKeySecret: config.AccessKeySecret,
-      bucket: config.bucket,
-    });
-
-    return client.delete(objectPath);
-  },
-
-  async deleteOssMultiObject(objectArrayPath){
-    const config = this.aliConfig();
-    let client = new OSS({
-      region: config.region,
-      accessKeyId: config.AccessKeyId,
-      accessKeySecret: config.AccessKeySecret,
-      bucket: config.bucket,
-    });
-
-    return client.deleteMulti(objectArrayPath);
-  },
-
-  async putOssObject(objectName,stream){
-    const config = this.aliConfig();
-    let client = new OSS({
-      region: config.region,
-      accessKeyId: config.AccessKeyId,
-      accessKeySecret: config.AccessKeySecret,
-      bucket: config.bucket,
-    });
-
-    try {
-      let result = await client.putStream(objectName, stream);
-      console.log(result);
-    } catch (e) {
-      console.log(e)
-    }
-  },
 
   cryptoPwd:(password)=>{
     const prefix = '13640661';

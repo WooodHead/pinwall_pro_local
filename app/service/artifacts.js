@@ -1,6 +1,8 @@
 'use strict';
 
 const Service = require('egg').Service;
+const path = require('path');
+const fs = require('fs');
 
 class Artifacts extends Service {
 
@@ -15,19 +17,20 @@ class Artifacts extends Service {
 
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
-      element.profileImage = helper.signatureUrl(helper.imagePath + element.profileImage, "thumb_360_360");
+
+      element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.profileImage);
 
       for (let subElement of element.artifact_assets){
-        subElement.profileImage = helper.signatureUrl(helper.imagePath + subElement.profileImage, "thumb_1000");
+        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.subElement);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
-            subElement.mediaFile = helper.signatureUrl(helper.pdfPath + subElement.mediaFile);
+            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, element.userId, element.mediaFile);
         }
         else if (subElement.type == 3 && subElement.mediaFile != null){
-            subElement.mediaFile = helper.signatureUrl(helper.rar_zipPath + subElement.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, element.userId, element.mediaFile);
         }
         else if (subElement.type == 4 && subElement.mediaFile != null){
-            subElement.mediaFile = helper.signatureUrl(helper.videoPath + subElement.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, element.userId, element.mediaFile);
         }
       }
     });
@@ -40,19 +43,19 @@ class Artifacts extends Service {
     const artifact = await this.ctx.model.Artifacts.findArtifactById(id);
     const helper = this.ctx.helper;
 
-    artifact.profileImage = helper.signatureUrl(helper.imagePath + artifact.profileImage, "thumb_360_360");
+    artifact.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, artifact.profileImage);
 
-    for (let subElement of artifact.dataValues.artifact_assets){
-      subElement.profileImage = helper.signatureUrl(helper.imagePath + subElement.profileImage, "thumb_1000");
+    for (let subElement of element.artifact_assets){
+      subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.subElement);
 
       if (subElement.type == 2 && subElement.mediaFile != null){
-        subElement.mediaFile = helper.signatureUrl(helper.pdfPath + subElement.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, element.userId, element.mediaFile);
       }
       else if (subElement.type == 3 && subElement.mediaFile != null){
-        subElement.mediaFile = helper.signatureUrl(helper.rar_zipPath + subElement.mediaFile);
+        subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, element.userId, element.mediaFile);
       }
       else if (subElement.type == 4 && subElement.mediaFile != null){
-        subElement.mediaFile = helper.signatureUrl(helper.videoPath + subElement.mediaFile);
+        subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, element.userId, element.mediaFile);
       }
     }
 
@@ -213,41 +216,45 @@ class Artifacts extends Service {
         ctx.getLogger('elasticLogger').info("update ID:"+id+": "+e.message+"\n");
       }
 
-      let deleteAliOSSArray = new Array();
+      let deleteFileArray = new Array();
       try{
 
         if(artifact.profileImage != updates.profileImage){
-          deleteAliOSSArray.push(ctx.app.imagePath + artifact.profileImage);
+          deleteFileArray.push(path.join(helper.basePath, helper.imagePath, element.userId, artifact.profileImage));
         }
 
         for (const artifactAssets of artifact.dataValues.artifact_assets){
           if(ctx.helper.judgeImageStringInArrayObject(artifactAssets.profileImage,updates.artifact_assets)){
-            deleteAliOSSArray.push(ctx.helper.imagePath + artifactAssets.profileImage);
+            deleteFileArray.push(path.join(helper.basePath, helper.imagePath, element.userId, artifactAssets.profileImage));
           }
 
           if(artifactAssets.type == 2){
             if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
-              deleteAliOSSArray.push(ctx.helper.pdfPath + artifactAssets.mediaFile);
+              deleteFileArray.push(path.join(helper.basePath, helper.pdfPath, element.userId, artifactAssets.mediaFile));
             }
           }
           else if(artifactAssets.type == 3){
             if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
-              deleteAliOSSArray.push(ctx.helper.rar_zipPath + artifactAssets.mediaFile);
+              deleteFileArray.push(path.join(helper.basePath, helper.rar_zipPath, element.userId, artifactAssets.mediaFile));
             }
           }
           else if(artifactAssets.type == 4){
             if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
-              deleteAliOSSArray.push(ctx.helper.videoPath + artifactAssets.mediaFile);
+              deleteFileArray.push(path.join(helper.basePath, helper.videoPath, element.userId, artifactAssets.mediaFile));
             }
           }
         }
 
-        if (deleteAliOSSArray.length > 0){
-          ctx.helper.deleteOssMultiObject(deleteAliOSSArray);
+        if (deleteFileArray.length > 0){
+          for (let path of deleteFileArray){
+              if (fs.existsSync(path)){
+                fs.unlinkSync(path);
+              }
+          }
         }
       }
       catch(e){
-          ctx.getLogger('aliossLogger').info("delete file:"+deleteAliOSSArray.join(',')+": "+e.message+"\n");
+          ctx.getLogger('aliossLogger').info("delete file:"+deleteFileArray.join(',')+": "+e.message+"\n");
       }
 
       return true
@@ -277,30 +284,45 @@ class Artifacts extends Service {
         ctx.getLogger('elasticLogger').info("delete ID:"+id+": "+e.message+"\n");
       }
 
-      let deleteAliOSSArray = new Array();
+      let deleteFileArray = new Array();
       try{
-        deleteAliOSSArray.push(ctx.helper.imagePath + artifact.profileImage);
+        if(artifact.profileImage != updates.profileImage){
+          deleteFileArray.push(path.join(helper.basePath, helper.imagePath, element.userId, artifact.profileImage));
+        }
 
-        for (const artifactAssets of artifact.dataValues.artifactAssets){
-          deleteAliOSSArray.push(ctx.helper.imagePath + artifactAssets.profileImage);
+        for (const artifactAssets of artifact.dataValues.artifact_assets){
+          if(ctx.helper.judgeImageStringInArrayObject(artifactAssets.profileImage,updates.artifact_assets)){
+            deleteFileArray.push(path.join(helper.basePath, helper.imagePath, element.userId, artifactAssets.profileImage));
+          }
 
           if(artifactAssets.type == 2){
-            deleteAliOSSArray.push(ctx.helper.pdfPath + artifactAssets.mediaFile);
+            if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
+              deleteFileArray.push(path.join(helper.basePath, helper.pdfPath, element.userId, artifactAssets.mediaFile));
+            }
           }
           else if(artifactAssets.type == 3){
-            deleteAliOSSArray.push(ctx.helper.rar_zipPath + artifactAssets.mediaFile);
+            if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
+              deleteFileArray.push(path.join(helper.basePath, helper.rar_zipPath, element.userId, artifactAssets.mediaFile));
+            }
           }
           else if(artifactAssets.type == 4){
-            deleteAliOSSArray.push(ctx.helper.videoPath + artifactAssets.mediaFile);
+            if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
+              deleteFileArray.push(path.join(helper.basePath, helper.videoPath, element.userId, artifactAssets.mediaFile));
+            }
           }
         }
-        if (deleteAliOSSArray.length > 0){
-          ctx.helper.deleteOssMultiObject(deleteAliOSSArray);
+
+        if (deleteFileArray.length > 0){
+          for (let path of deleteFileArray){
+              if (fs.existsSync(path)){
+                fs.unlinkSync(path);
+              }
+          }
         }
 
       }
       catch(e){
-          ctx.getLogger('aliossLogger').info("delete ID:"+deleteAliOSSArray.join(',')+": "+e.message+"\n");
+          ctx.getLogger('aliossLogger').info("delete ID:"+deleteFileArray.join(',')+": "+e.message+"\n");
       }
       await transaction.commit();
       return true
@@ -344,19 +366,19 @@ class Artifacts extends Service {
     let resultObj = await this.ctx.model.Artifacts.getPersonalJobByUserId(query);
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
-      element.profileImage = helper.signatureUrl(helper.imagePath + element.profileImage, "thumb_360_360");
+      element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.profileImage);
 
       for (let subElement of element.artifact_assets){
-        subElement.profileImage = helper.signatureUrl(helper.imagePath + subElement.profileImage, "thumb_1000");
+        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.subElement);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
-          subElement.mediaFile = helper.signatureUrl(helper.pdfPath + subElement.mediaFile);
+            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, element.userId, element.mediaFile);
         }
         else if (subElement.type == 3 && subElement.mediaFile != null){
-          subElement.mediaFile = helper.signatureUrl(helper.rar_zipPath + subElement.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, element.userId, element.mediaFile);
         }
         else if (subElement.type == 4 && subElement.mediaFile != null){
-          subElement.mediaFile = helper.signatureUrl(helper.videoPath + subElement.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, element.userId, element.mediaFile);
         }
       }
 
