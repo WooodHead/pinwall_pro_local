@@ -17,7 +17,7 @@ class FileController extends BaseController {
     async uploadFile() {
         const ctx = this.ctx;
         let fileType = ctx.query.fileType;
-        let userId = ctx.query.userId;
+        let userId = ctx.user.Id;
 
         let fileTagget = '';
 
