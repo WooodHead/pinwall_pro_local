@@ -17,10 +17,9 @@ class Topics extends Service {
 
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
-
-          for (let subElement of element.artifacts){
-            subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
-          }
+      for (let subElement of element.artifacts){
+        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
+      }
     });
 
     return resultObj;
@@ -39,10 +38,9 @@ class Topics extends Service {
 
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
-
-          for (let subElement of element.artifacts){
-            subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
-          }
+      for (let subElement of element.artifacts){
+        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
+      }
     });
 
     return resultObj;
