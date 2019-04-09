@@ -21,7 +21,7 @@ class Artifacts extends Service {
       element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.profileImage);
 
       for (let subElement of element.artifact_assets){
-        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.subElement);
+        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, subElement.profileImage);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
             subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, element.userId, element.mediaFile);
@@ -46,7 +46,7 @@ class Artifacts extends Service {
     artifact.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, artifact.profileImage);
 
     for (let subElement of element.artifact_assets){
-      subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.subElement);
+      subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, subElement.profileImage);
 
       if (subElement.type == 2 && subElement.mediaFile != null){
           subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, element.userId, element.mediaFile);
@@ -369,7 +369,7 @@ class Artifacts extends Service {
       element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.profileImage);
 
       for (let subElement of element.artifact_assets){
-        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.subElement);
+        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, subElement.profileImage);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
             subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, element.userId, element.mediaFile);

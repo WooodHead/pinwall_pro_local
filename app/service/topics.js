@@ -17,10 +17,10 @@ class Topics extends Service {
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
 
-          element.profileImage = helper.signatureUrl(helper.imagePath + element.profileImage, "thumb_360_360");
+          element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.profileImage);
 
           for (let subElement of element.artifacts){
-            subElement.profileImage = helper.signatureUrl(helper.imagePath + subElement.profileImage, "thumb_360_360");
+            subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, subElement.profileImage);
           }
     });
 
@@ -42,7 +42,7 @@ class Topics extends Service {
     resultObj.rows.forEach((element, index)=>{
 
           for (let subElement of element.artifacts){
-              subElement.profileImage = helper.signatureUrl(helper.imagePath + subElement.profileImage, "thumb_360_360");
+            subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, subElement.profileImage);
           }
     });
 
@@ -132,7 +132,7 @@ class Topics extends Service {
     const helper = this.ctx.helper;
 
     topic.rows.artifacts.forEach((element, index)=>{
-      element.profileImage = helper.signatureUrl(helper.imagePath + element.profileImage, "thumb_360_360");
+      element.profileImage = path.join(helper.baseUrl, helper.imagePath, element.userId, element.profileImage);
     });
 
     return topic;
