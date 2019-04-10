@@ -18,6 +18,9 @@
 <div class="container" :style="containerStyle">
 	<div class="login_panel">
 		<div class="login_info">
+			<h5>{{ __('email') }}: </h5>
+			<h5>{{ __('login') }}: </h5>
+			<h5>{{ __('createdAt') }}: </h5>
 			<h3 class="title">系统登录</h3>
 			<form id="myform" method="post" action="/login" onsubmit="return check(this)">
 				<div class="username">
