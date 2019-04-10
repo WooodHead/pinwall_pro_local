@@ -1,10 +1,3 @@
-
-var bucket = 'pinwall-pro';
-var urllib = OSS.urllib;
-var Buffer = OSS.Buffer;
-var OSS = OSS.Wrapper;
-var STS = OSS.STS;
-
 var container = new Vue({
     el: '.index',
     data(){
@@ -57,71 +50,32 @@ var container = new Vue({
         step1_upload_fengmian_change(files){
             let that = this;
             let file = files.target.files[0];
-            let fileName = calculate_object_name(files.target.files[0].name);
             let fileSize = files.target.files[0].size/1048576;
             if (fileSize <= 2) {
                 this.$Notice.success({title:'上传中···'});
                 let formdata = new FormData();
                 formdata.append('head', file);
                 $.ajax({
-                    url: config.ajaxUrls.uploadFile + '/1',
+                    url: config.ajaxUrls.uploadFile.replace(":type",1),
                     type: 'POST',
                     cache: false,
                     processData: false,
                     contentType: false,
                     data: formdata,
                     success(res){
-                        console.log(res);
+                        let img = new Image();
+                        img.src = res.url;
+                        img.onload = function(){
+                            if(img.width == img.height && img.width >= 600 && img.width <= 800){
+                                that.$Notice.success({title:'上传成功！'});
+                                that.step1_upload_fengmian_src = res.url;
+                                that.dataItem.profileImage = res.fileName;
+                            }else{
+                                that.$Notice.error({title:"图片不符合尺寸要求！，请重新上传……"});
+                            }
+                        }
                     }
                 })
-
-                // $.ajax({
-                //     url: '/getSTSSignature/1',
-                //     type: 'GET',
-                //     success:function(res){
-                //         if (res.res.status == 200){
-                //             let client = new OSS({
-                //           		accessKeyId: res.credentials.AccessKeyId,
-                //           		accessKeySecret: res.credentials.AccessKeySecret,
-                //           		stsToken: res.credentials.SecurityToken,
-                //                 bucket:bucket
-                //         	});
-                //             client.multipartUpload('images/'+ fileName, file).then(function (res) {
-                //                 let objectPath = 'images/' + fileName;
-                //                 $.ajax({
-                //                     url: config.ajaxUrls.getUrlSignature,
-                //                     type: 'GET',
-                //                     data:{objectPath:objectPath},
-                //                     success:function(res){
-                //                         let img = new Image();
-                //                         img.src = res;
-                //                         img.onload = function(){
-                //                             if(img.width == img.height && img.width >= 600 && img.width <= 800){
-                //                                 that.$Notice.success({title:'上传成功！'});
-                //                                 that.step1_upload_fengmian_src = res;
-                //                                 that.dataItem.profileImage = fileName;
-                //                             }else{
-                //                                 that.$Notice.error({title:"图片不符合尺寸要求！，请重新上传……"});
-                //                             }
-                //                         }
-                //                     }
-                //                 })
-                //         	});
-                //         }else if (res.res.status == 999) {
-                //             that.$Notice.error({
-                //                 title:res.data,
-                //                 duration:3,
-                //                 onClose(){
-                //                     window.location.href = "/login";
-                //                 }
-                //             });
-                //         }else if(res.status == 500){
-                //             that.$Notice.error({
-                //                 title:"上传出现异常，请刷新界面重试！"
-                //             })
-                //         }
-                //     }
-                // })
             }else{
                 this.$Notice.error({title:"图片大小不符，请重新选择"});
             }
@@ -129,72 +83,47 @@ var container = new Vue({
         step2_upload_neirong_change(files){
             let that = this;
             let file = files.target.files[0];
-            let fileName = calculate_object_name(files.target.files[0].name);
             this.$Notice.success({title:'上传中···'});
+
+            let formdata = new FormData();
+            formdata.append('head', file);
             $.ajax({
-                url: '/getSTSSignature/1',
-                type: 'GET',
-                success:function(res){
-                    if (res.res.status == 200) {
-                        let client = new OSS({
-                      		accessKeyId: res.credentials.AccessKeyId,
-                      		accessKeySecret: res.credentials.AccessKeySecret,
-                      		stsToken: res.credentials.SecurityToken,
-                            bucket:bucket
-                    	});
-                        client.multipartUpload('images/'+ fileName, file).then(function (res) {
-                            let objectPath = 'images/' + fileName;
-                            $.ajax({
-                                url: config.ajaxUrls.getUrlSignature,
-                                type: 'GET',
-                                data:{objectPath:objectPath},
-                                success:function(res){
-                                    that.$Notice.success({title:'上传成功！'});
-                                    that.step2_upload_neirong_src = that.step2_upload_neirong_src.concat(res);
+                url: config.ajaxUrls.uploadFile.replace(":type",1),
+                type: 'POST',
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formdata,
+                success(res){
+                    that.$Notice.success({title:'上传成功！'});
+                    that.step2_upload_neirong_src = that.step2_upload_neirong_src.concat(res.url);
 
-                                    let subarr = new Object();
-                                    if (that.dataItem.Id) {
-                                        subarr.position = that.step2_upload_neirong_src.length - 1;
-                                    }else if(that.dataItem.topicId){
-                                        subarr.position = that.step2_upload_neirong_src.length - 1;
-                                    }else if(that.dataItem.jobTag == 2){
-                                        subarr.position = that.step2_upload_neirong_src.length - 1;
-                                    }else{
-                                        subarr.position = "";
-                                    }
-                        			subarr.name = "";
-                        			subarr.filename = "";
-                                    subarr.imagename = files.target.files[0].name;
-                        			subarr.description = "";
-                        			subarr.type = 1;
-                        			subarr.profileImage = fileName;
-                        			subarr.mediaFile = "";
-                        			subarr.viewUrl = "";
-                                    subarr.viewImgUrl = res;
-                                    that.step2_between_arr.push(subarr);
-
-                                    let progress_subarr = new Object();
-                                    progress_subarr.progress = 0;
-                                    progress_subarr.fileTrueName = "";
-                                    that.file_otherinof_arr.push(progress_subarr);
-                                    that.neirong_truename_arr.push(files.target.files[0].name);
-
-                                }
-                            })
-                    	});
-                    } else if (res.res.status == 999) {
-                        that.$Notice.error({
-                            title:res.data,
-                            duration:3,
-                            onClose(){
-                                window.location.href = "/login";
-                            }
-                        });
-                    }else if(res.status == 500){
-                        that.$Notice.error({
-                            title:"上传出现异常，请刷新界面重试！"
-                        })
+                    let subarr = new Object();
+                    if (that.dataItem.Id) {
+                        subarr.position = that.step2_upload_neirong_src.length - 1;
+                    }else if(that.dataItem.topicId){
+                        subarr.position = that.step2_upload_neirong_src.length - 1;
+                    }else if(that.dataItem.jobTag == 2){
+                        subarr.position = that.step2_upload_neirong_src.length - 1;
+                    }else{
+                        subarr.position = "";
                     }
+                    subarr.name = "";
+                    subarr.filename = "";
+                    subarr.imagename = files.target.files[0].name;
+                    subarr.description = "";
+                    subarr.type = 1;
+                    subarr.profileImage = res.fileName;
+                    subarr.mediaFile = "";
+                    subarr.viewUrl = "";
+                    subarr.viewImgUrl = res.url;
+                    that.step2_between_arr.push(subarr);
+
+                    let progress_subarr = new Object();
+                    progress_subarr.progress = 0;
+                    progress_subarr.fileTrueName = "";
+                    that.file_otherinof_arr.push(progress_subarr);
+                    that.neirong_truename_arr.push(files.target.files[0].name);
                 }
             })
         },
@@ -204,49 +133,23 @@ var container = new Vue({
         step2_upload_change(files){
             let that = this;
             let file = files.target.files[0];
-            let fileName = calculate_object_name(files.target.files[0].name);
             this.$Notice.success({title:'上传中···'});
-            $.ajax({
-                url: '/getSTSSignature/1',
-                type: 'GET',
-                success:function(res){
-                    if (res.res.status == 200) {
-                        let client = new OSS({
-                      		accessKeyId: res.credentials.AccessKeyId,
-                      		accessKeySecret: res.credentials.AccessKeySecret,
-                      		stsToken: res.credentials.SecurityToken,
-                            bucket:bucket
-                    	});
-                        client.multipartUpload('images/'+ fileName, file).then(function (res) {
-                            let objectPath = 'images/' + fileName;
-                            $.ajax({
-                                url: config.ajaxUrls.getUrlSignature,
-                                type: 'GET',
-                                data:{objectPath:objectPath},
-                                success:function(res){
-                                    that.$Notice.success({title:'上传成功！'});
-                                    that.step2_upload_neirong_src.splice(that.which_artifact_assets,1,res);
-                                    that.step2_between_arr[that.which_artifact_assets].imagename = files.target.files[0].name;
-                                    that.step2_between_arr[that.which_artifact_assets].viewImgUrl = res;
-                                    that.step2_between_arr[that.which_artifact_assets].profileImage = fileName;
-                                    that.neirong_truename_arr[that.which_artifact_assets] = files.target.files[0].name;
 
-                                }
-                            })
-                    	});
-                    } else if (res.res.status == 999) {
-                        that.$Notice.error({
-                            title:res.data,
-                            duration:3,
-                            onClose(){
-                                window.location.href = "/login";
-                            }
-                        });
-                    }else if(res.status == 500){
-                        that.$Notice.error({
-                            title:"上传出现异常，请刷新界面重试！"
-                        })
-                    }
+            let formdata = new FormData();
+            formdata.append('head', file);
+            $.ajax({
+                url: config.ajaxUrls.uploadFile.replace(":type",1),
+                type: 'POST',
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formdata,
+                success(res){
+                    that.step2_upload_neirong_src.splice(that.which_artifact_assets,1,res.url);
+                    that.step2_between_arr[that.which_artifact_assets].imagename = files.target.files[0].name;
+                    that.step2_between_arr[that.which_artifact_assets].viewImgUrl = res.url;
+                    that.step2_between_arr[that.which_artifact_assets].profileImage = res.fileName;
+                    that.neirong_truename_arr[that.which_artifact_assets] = files.target.files[0].name;
                 }
             })
         },
@@ -255,40 +158,33 @@ var container = new Vue({
             let file = files.target.files[0];
             let fileTrueName = files.target.files[0].name;
             this.file_otherinof_arr[this.which_artifact_assets].fileTrueName = files.target.files[0].name;
-            let fileName = calculate_object_name(files.target.files[0].name);
+            this.$Notice.success({title:'上传中···'});
+
+            let formdata = new FormData();
+            formdata.append('head', file);
             $.ajax({
-                url: config.ajaxUrls.getSTSSignature.replace(":type",4),
-                type: 'GET',
-                success:function(res){
-                    if (res.res.status == 200) {
-                        let client = new OSS({
-                      		accessKeyId: res.credentials.AccessKeyId,
-                      		accessKeySecret: res.credentials.AccessKeySecret,
-                      		stsToken: res.credentials.SecurityToken,
-                            bucket:bucket
-                    	});
-                        client.multipartUpload('video/'+ fileName, file, {
-                    		progress: progress
-                    	}).then(function (res) {
-                            that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
-                            that.step2_between_arr[that.which_artifact_assets].type = 4;
-                            that.step2_between_arr[that.which_artifact_assets].mediaFile = fileName;
-                            that.step2_between_arr[that.which_artifact_assets].viewUrl = res.res.requestUrls[0].split("?")[0].split("video/")[1];
-                            that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
-                    	});
-                    } else if (res.res.status == 999) {
-                        that.$Notice.error({
-                            title:res.data,
-                            duration:3,
-                            onClose(){
-                                window.location.href = "/login";
-                            }
-                        });
-                    }else if(res.status == 500){
-                        that.$Notice.error({
-                            title:"上传出现异常，请刷新界面重试！"
-                        })
-                    }
+                url: config.ajaxUrls.uploadFile.replace(":type",4),
+                type: 'POST',
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formdata,
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.addEventListener("progress", function (event) {
+                        if (event.lengthComputable) {
+                            var percentComplete = event.loaded / event.total;
+                            that.file_otherinof_arr[container.which_artifact_assets].progress = percentComplete * 100;
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success(res){
+                    that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
+                    that.step2_between_arr[that.which_artifact_assets].type = 4;
+                    that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
+                    that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
+                    that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
                 }
             })
         },
@@ -297,41 +193,34 @@ var container = new Vue({
             let file = files.target.files[0];
             let fileTrueName = files.target.files[0].name;
             this.file_otherinof_arr[this.which_artifact_assets].fileTrueName = files.target.files[0].name;
-            let fileName = calculate_object_name(files.target.files[0].name);
-            $.ajax({
-                url: config.ajaxUrls.getSTSSignature.replace(":type",2),
-                type: 'GET',
-                success:function(res){
 
-                    if (res.res.status == 200) {
-                        let client = new OSS({
-                      		accessKeyId: res.credentials.AccessKeyId,
-                      		accessKeySecret: res.credentials.AccessKeySecret,
-                      		stsToken: res.credentials.SecurityToken,
-                            bucket:bucket
-                    	});
-                        client.multipartUpload('pdf/'+ fileName, file, {
-                    		progress: progress
-                    	}).then(function (res) {
-                            that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
-                            that.step2_between_arr[that.which_artifact_assets].type = 2;
-                            that.step2_between_arr[that.which_artifact_assets].mediaFile = fileName;
-                            that.step2_between_arr[that.which_artifact_assets].viewUrl = res.res.requestUrls[0].split("?")[0].split("pdf/")[1];
-                            that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
-                    	});
-                    } else if (res.res.status == 999) {
-                        that.$Notice.error({
-                            title:res.data,
-                            duration:3,
-                            onClose(){
-                                window.location.href = "/login";
-                            }
-                        });
-                    }else if(res.status == 500){
-                        that.$Notice.error({
-                            title:"上传出现异常，请刷新界面重试！"
-                        })
-                    }
+            this.$Notice.success({title:'上传中···'});
+
+            let formdata = new FormData();
+            formdata.append('head', file);
+            $.ajax({
+                url: config.ajaxUrls.uploadFile.replace(":type",2),
+                type: 'POST',
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formdata,
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.addEventListener("progress", function (event) {
+                        if (event.lengthComputable) {
+                            var percentComplete = event.loaded / event.total;
+                            that.file_otherinof_arr[container.which_artifact_assets].progress = percentComplete * 100;
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success(res){
+                    that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
+                    that.step2_between_arr[that.which_artifact_assets].type = 2;
+                    that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
+                    that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
+                    that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
                 }
             })
         },
@@ -340,40 +229,34 @@ var container = new Vue({
             let file = files.target.files[0];
             let fileTrueName = files.target.files[0].name;
             this.file_otherinof_arr[this.which_artifact_assets].fileTrueName = files.target.files[0].name;
-            let fileName = calculate_object_name(files.target.files[0].name);
+
+            this.$Notice.success({title:'上传中···'});
+
+            let formdata = new FormData();
+            formdata.append('head', file);
             $.ajax({
-                url: config.ajaxUrls.getSTSSignature.replace(":type",3),
-                type: 'GET',
-                success:function(res){
-                    if (res.res.status == 200) {
-                        let client = new OSS({
-                      		accessKeyId: res.credentials.AccessKeyId,
-                      		accessKeySecret: res.credentials.AccessKeySecret,
-                      		stsToken: res.credentials.SecurityToken,
-                            bucket:bucket
-                    	});
-                        client.multipartUpload('rar_zip/'+ fileName, file, {
-                    		progress: progress
-                    	}).then(function (res) {
-                            that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
-                            that.step2_between_arr[that.which_artifact_assets].type = 3;
-                            that.step2_between_arr[that.which_artifact_assets].mediaFile = fileName;
-                            that.step2_between_arr[that.which_artifact_assets].viewUrl = res.res.requestUrls[0].split("?")[0].split("rar_zip/")[1];
-                            that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
-                    	});
-                    } else if (res.res.status == 999) {
-                        that.$Notice.error({
-                            title:res.data,
-                            duration:3,
-                            onClose(){
-                                window.location.href = "/login";
-                            }
-                        });
-                    }else if(res.status == 500){
-                        that.$Notice.error({
-                            title:"上传出现异常，请刷新界面重试！"
-                        })
-                    }
+                url: config.ajaxUrls.uploadFile.replace(":type",3),
+                type: 'POST',
+                cache: false,
+                processData: false,
+                contentType: false,
+                data: formdata,
+                xhr: function () {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.addEventListener("progress", function (event) {
+                        if (event.lengthComputable) {
+                            var percentComplete = event.loaded / event.total;
+                            that.file_otherinof_arr[container.which_artifact_assets].progress = percentComplete * 100;
+                        }
+                    }, false);
+                    return xhr;
+                },
+                success(res){
+                    that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
+                    that.step2_between_arr[that.which_artifact_assets].type = 3;
+                    that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
+                    that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
+                    that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
                 }
             })
         },
@@ -464,7 +347,6 @@ var container = new Vue({
             this.stepThreeActive = false;
         },
         goStep2(){
-
             if (this.dataItem.name && this.dataItem.description && this.dataItem.profileImage) {
                 if(this.dataItem.Id){
                     this.dataItem.addTerms = this.addTerms;
@@ -485,11 +367,6 @@ var container = new Vue({
                 this.stepTwoActive = false;
                 this.stepThreeActive = true;
                 this.dataItem.artifact_assets = this.step2_between_arr;
-                for(let i=0;i<this.step2_upload_neirong_src.length;i++){
-                    let profileImage_url = new String();
-                    profileImage_url = this.step2_upload_neirong_src[i];
-                    this.dataItem.artifact_assets[i].profileImage = profileImage_url.split("?")[0].split("images/")[1];
-                }
             }else{
                 this.$Notice.error({title:"请输入必填信息！"})
             }
@@ -561,7 +438,7 @@ var container = new Vue({
                     that.dataItem.description = res.data.description;
 
                     that.step1_upload_fengmian_src = res.data.profileImage;
-                    that.dataItem.profileImage = res.data.profileImage.split("/")[res.data.profileImage.split("/").length - 1].split("?")[0];
+                    that.dataItem.profileImage = res.data.profileImage.split("/")[res.data.profileImage.split("/").length - 1];
 
                     that.dataItem.terms = res.data.terms;
                     for(let i=0;i<res.data.terms.length;i++){
@@ -581,7 +458,7 @@ var container = new Vue({
                         bet.description = res.data.artifact_assets[i].description;
                         bet.type = res.data.artifact_assets[i].type;
                         bet.profileImage = res.data.artifact_assets[i].profileImage;
-                        bet.mediaFile = res.data.artifact_assets[i].mediaFile.split("?")[0].split("/")[res.data.artifact_assets[i].mediaFile.split("?")[0].split("/").length - 1];
+                        bet.mediaFile = res.data.artifact_assets[i].mediaFile.split("/")[res.data.artifact_assets[i].mediaFile.split("/").length - 1];
                         bet.viewUrl = res.data.artifact_assets[i].viewUrl;
                         bet.viewImgUrl = res.data.artifact_assets[i].profileImage;
                         that.step2_between_arr.push(bet);
@@ -644,41 +521,3 @@ $(document).ready(function(){
         $('#step2_upload_HTML5_input').click();
     });
 });
-
-/**
- * 文件名编码
- */
-function random_string(len) {
-	len = len || 32;
-	var chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
-	var maxPos = chars.length;
-	var pwd = '';
-	for(i = 0; i < len; i++) {
-		pwd += chars.charAt(Math.floor(Math.random() * maxPos));
-	}
-	return pwd;
-}
-
-function get_suffix(filename) {
-	pos = filename.lastIndexOf('.')
-	suffix = ''
-	if(pos != -1) {
-		suffix = filename.substring(pos)
-	}
-	return suffix;
-}
-
-function calculate_object_name(filename) {
-
-	suffix = get_suffix(filename);
-	g_object_name = random_string(20) + suffix;
-
-    return g_object_name;
-}
-
-var progress = function (p) {
-	return function (done) {
-		container.file_otherinof_arr[container.which_artifact_assets].progress = p * 100;
-		done();
-	}
-};
