@@ -88,5 +88,9 @@ module.exports = appInfo => {
     cookieMaxAge: '1y',
   };
 
+  config.multipart = {
+    fileExtensions: [ '.pdf' ] // 增加对 pdf 扩展名的文件支持
+  };
+
   return config;
 };
