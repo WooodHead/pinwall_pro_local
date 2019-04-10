@@ -3,6 +3,7 @@
 const Service = require('egg').Service;
 const UUID = require('uuid');
 const moment = require('moment');
+const path = require('path');
 
 class Users extends Service {
 
@@ -18,7 +19,10 @@ class Users extends Service {
 
   async find(id) {
     const user = await this.ctx.model.Users.findUserById(id);
-
+    if(user.avatarUrl){
+      let helper = this.ctx.helper;
+      user.avatarUrl = helper.baseUrl + path.join(helper.imagePath, (user.userId).toString(), user.avatarUrl);
+    }
     return user;
   }
 
