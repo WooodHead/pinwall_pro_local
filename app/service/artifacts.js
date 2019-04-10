@@ -24,13 +24,13 @@ class Artifacts extends Service {
         subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
-            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), element.mediaFile);
+            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 3 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), element.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 4 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), element.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), subElement.mediaFile);
         }
       }
     });
@@ -49,13 +49,13 @@ class Artifacts extends Service {
       subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
 
       if (subElement.type == 2 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), element.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), subElement.mediaFile);
       }
       else if (subElement.type == 3 && subElement.mediaFile != null){
-        subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), element.mediaFile);
+        subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), subElement.mediaFile);
       }
       else if (subElement.type == 4 && subElement.mediaFile != null){
-        subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), element.mediaFile);
+        subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), subElement.mediaFile);
       }
     }
 
@@ -367,19 +367,18 @@ class Artifacts extends Service {
     let resultObj = await this.ctx.model.Artifacts.getPersonalJobByUserId(query);
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
-      element.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), element.profileImage);
 
       for (let subElement of element.artifact_assets){
         subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
-            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), element.mediaFile);
+            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 3 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), element.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 4 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), element.mediaFile);
+          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), subElement.mediaFile);
         }
       }
 
