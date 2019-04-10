@@ -22,11 +22,11 @@ module.exports = {
   videoPath: 'video',
 
 
-  es_index:'pinwall_pro',
+  es_index:'pinwall_pro_local',
   es_type:'artifacts',
 
-  es_search_suggest_index:'pinwall_pro_search_suggest',
-  es_search_suggest_type:'pinwall_pro_suggest',
+  es_search_suggest_index:'pinwall_pro_local_search_suggest',
+  es_search_suggest_type:'pinwall_pro_local_suggest',
 
   cryptoPwd:(password)=>{
     const prefix = '13640661';

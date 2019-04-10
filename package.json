@@ -45,7 +45,7 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-pinwall-server",
+    "start": "egg-scripts start --daemon --title=egg-server-pinwall-server --port=7009",
     "stop": "egg-scripts stop --title=egg-server-pinwall-server",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
