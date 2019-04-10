@@ -18,19 +18,19 @@ class Artifacts extends Service {
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
 
-      element.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), element.profileImage);
+      element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), element.profileImage);
 
       for (let subElement of element.artifact_assets){
-        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
+        subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), subElement.profileImage);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
-            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), subElement.mediaFile);
+            subElement.mediaFile = helper.baseUrl + path.join(helper.pdfPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 3 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), subElement.mediaFile);
+          subElement.mediaFile = helper.baseUrl + path.join(helper.rar_zipPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 4 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), subElement.mediaFile);
+          subElement.mediaFile = helper.baseUrl + path.join(helper.videoPath, (element.userId).toString(), subElement.mediaFile);
         }
       }
     });
@@ -43,20 +43,20 @@ class Artifacts extends Service {
     const artifact = await this.ctx.model.Artifacts.findArtifactById(id);
     const helper = this.ctx.helper;
 
-    artifact.profileImage = path.join(helper.baseUrl, helper.imagePath, (artifact.userId).toString(), artifact.profileImage);
+    artifact.profileImage = helper.baseUrl + path.join(helper.imagePath, (artifact.userId).toString(), artifact.profileImage);
 
     for (let subElement of artifact.artifact_assets){
 
-      subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (artifact.userId).toString(), subElement.profileImage);
+      subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (artifact.userId).toString(), subElement.profileImage);
 
       if (subElement.type == 2 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (artifact.userId).toString(), subElement.mediaFile);
+          subElement.mediaFile = helper.baseUrl + path.join(helper.pdfPath, (artifact.userId).toString(), subElement.mediaFile);
       }
       else if (subElement.type == 3 && subElement.mediaFile != null){
-        subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (artifact.userId).toString(), subElement.mediaFile);
+        subElement.mediaFile = helper.baseUrl + path.join(helper.rar_zipPath, (artifact.userId).toString(), subElement.mediaFile);
       }
       else if (subElement.type == 4 && subElement.mediaFile != null){
-        subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (artifact.userId).toString(), subElement.mediaFile);
+        subElement.mediaFile = helper.baseUrl + path.join(helper.videoPath, (artifact.userId).toString(), subElement.mediaFile);
       }
     }
 
@@ -340,7 +340,7 @@ class Artifacts extends Service {
     if(max < limit){
         listData.forEach((element, index)=>{
             let profileImage = element.profileImage;
-            element.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), element.profileImage);
+            element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), element.profileImage);
         });
 
         return listData;
@@ -355,7 +355,7 @@ class Artifacts extends Service {
       let result = new Array();
       for (let item of setData.values()) {
         let profileImage = listData[item].dataValues.profileImage;
-        listData[item].dataValues.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), profileImage);
+        listData[item].dataValues.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), profileImage);
 
         result.push(listData[item]);
       }
@@ -369,17 +369,19 @@ class Artifacts extends Service {
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
 
+      element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), element.profileImage);
+
       for (let subElement of element.artifact_assets){
-        subElement.profileImage = path.join(helper.baseUrl, helper.imagePath, (element.userId).toString(), subElement.profileImage);
+        subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), subElement.profileImage);
 
         if (subElement.type == 2 && subElement.mediaFile != null){
-            subElement.mediaFile = path.join(helper.baseUrl, helper.pdfPath, (element.userId).toString(), subElement.mediaFile);
+            subElement.mediaFile = helper.baseUrl + path.join(helper.pdfPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 3 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.rar_zipPath, (element.userId).toString(), subElement.mediaFile);
+          subElement.mediaFile = helper.baseUrl + path.join(helper.rar_zipPath, (element.userId).toString(), subElement.mediaFile);
         }
         else if (subElement.type == 4 && subElement.mediaFile != null){
-          subElement.mediaFile = path.join(helper.baseUrl, helper.videoPath, (element.userId).toString(), subElement.mediaFile);
+          subElement.mediaFile = helper.baseUrl + path.join(helper.videoPath, (element.userId).toString(), subElement.mediaFile);
         }
       }
 
