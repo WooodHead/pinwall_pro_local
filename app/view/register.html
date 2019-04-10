@@ -21,6 +21,11 @@
                 <form-item label="姓名" prop="fullname">
                     <i-input v-model="formItem.fullname" clearable placeholder="请输入姓名(无法修改)"></i-input>
                 </form-item>
+				<form-item label="头像">
+					<img class="thumb" style="width:50px;height:50px;border-radius:25px;display:block;" :src="formItem.avatarUrl ? formItem.avatarUrl : '../public/images/default_profile.jpg'">
+					<i-button type="default" class="uploadAvatar">选择图片</i-button>
+					<input type="file" @change="uploadAvatarChange" class="uploadAvatar_input" accept="aplication/zip" style="display:none;"/>
+                </form-item>
                 <form-item label="手机号" prop="mobile">
                     <i-input v-model="formItem.mobile" clearable placeholder="请输入手机号码"></i-input>
                 </form-item>
