@@ -67,7 +67,8 @@ class FileController extends BaseController {
         }
         //文件响应
         ctx.body = {
-            url: path.join(ctx.helper.baseUrl, fileTagget.replace(ctx.helper.basePath,''), filename)
+            url: path.join(ctx.helper.baseUrl, fileTagget.replace(ctx.helper.basePath,''), filename),
+            fileNmae:filename
         };
     }
 }
