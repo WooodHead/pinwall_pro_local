@@ -8,7 +8,6 @@ var index = new Vue({
             },
             drawerShow:false,
             formItem:{
-                avatarUrl:"",
                 fullname:"",
                 mobile:"",
                 smsCode:"",
@@ -50,38 +49,6 @@ var index = new Vue({
         }
     },
     methods: {
-        uploadAvatarChange(files){
-            let that = this;
-            let file = files.target.files[0];
-            let fileSize = files.target.files[0].size/1024;
-            if(fileSize <= 100){
-                this.$Notice.success({title:'上传中···'});
-                let formdata = new FormData();
-                formdata.append('head', file);
-                $.ajax({
-                    url: config.ajaxUrls.uploadFile.replace(":type",5),
-                    type: 'POST',
-                    cache: false,
-                    processData: false,
-                    contentType: false,
-                    data: formdata,
-                    success(res){
-                        let img = new Image();
-                        img.src = res.url;
-                        img.onload = function(){
-                            if(img.width == img.height &&img.width <= 100){
-                                that.$Notice.success({title:'上传成功！'});
-                                that.formItem.avatarUrlc = res.url;
-                            }else{
-                                that.$Notice.error({title:"图片尺寸过大(100*100)！，请重新上传……"});
-                            }
-                        }
-                    }
-                })
-            }else{
-                this.$Notice.error({title:"图片内存过大(100Kb)，请重新选择"});
-            }
-        },
         tapClick(){
             let that = this;
             $.ajax({
@@ -222,9 +189,3 @@ function clock(that){
 		}
 	},1000);
 }
-$(document).ready(function(){
-    //step2作品内容图片更换事件
-    $('.uploadAvatar').click(function(){
-        $('.uploadAvatar_input').click();
-    });
-});

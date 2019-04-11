@@ -15,22 +15,19 @@
 {% block container %}
 	<div class="container" :style="containerStyle">
 		<h3>修改个人信息</h3>
-        <!-- <div class="resetInfo_panel">
+        <div class="resetInfo_panel">
             <div class="photo_field">
-                <img :src="'{{user.avatarUrl}}' ? '{{user.avatarUrl}}' : 'http://pinwall.design-engine.org/images/default_profile.jpg'" alt="">
-                <p>点击更换</p>
-                <div class="uploadfile_img">
-                    <input type="file" name="" value="">
-                </div>
+				<img class="thumb" style="width:50px;height:50px;border-radius:25px;" :src="avatarUrl ? avatarUrl : '../public/images/default_profile.jpg'"><br>
+				<i-button type="default" class="uploadAvatar">选择图片</i-button>
+				<input type="file" @change="uploadAvatarChange" class="uploadAvatar_input" accept="aplication/zip" style="display:none;"/>
             </div>
             <div class="user_info">
-                <p v-text="'{{user.email}}'"><span style="font-style: italic;font-size: 12px;color: #666;font-weight: normal;">(不可更改)</span></p><br>
-                <i-input type="textarea" placeholder="关于你···"></i-input><br><br>
-                <i-button type="success">保存</i-button>
+				<p>头像限100Kb以内的jpg或png图片</p>
+				<i-button type="success" @click="submitUserAvatar('{{user.Id}}')">保存</i-button>
             </div>
-        </div> -->
+        </div>
         <div class="resetPwd_panel">
-            <!-- <p style="font-weight: normal;font-size: 16px;color: #09bc72;margin: 15px 0;text-align: center;">设置一个好记的密码吧。</p> -->
+            <p style="font-weight: normal;font-size: 16px;color: #09bc72;margin: 15px 0;text-align: center;">设置一个好记的密码吧。</p>
             <i-form :model="pwdItem" :label-width="80" :rules="ruleValidate">
                 <form-item label="旧密码" prop="password">
                     <i-input type="password" v-model="pwdItem.password" placeholder="请输入旧密码"></i-input>

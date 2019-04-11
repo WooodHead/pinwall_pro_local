@@ -6,6 +6,8 @@ var index = new Vue({
             containerStyle:{
                 minHeight:"",
             },
+            avatarName:"",
+            avatarUrl:"",
             pwdItem:{
                 password:"",
                 newPwd:"",
@@ -30,6 +32,60 @@ var index = new Vue({
         }
     },
     methods: {
+        uploadAvatarChange(files){
+            let that = this;
+            let file = files.target.files[0];
+            let fileSize = files.target.files[0].size/1024;
+            if(fileSize <= 100){
+                this.$Notice.success({title:'上传中···'});
+                let formdata = new FormData();
+                formdata.append('head', file);
+                $.ajax({
+                    url: config.ajaxUrls.uploadFile.replace(":type",5),
+                    type: 'POST',
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    data: formdata,
+                    success(res){
+                        console.log(res);
+                        if(res.status == 200){
+                            let img = new Image();
+                            img.src = res.url;
+                            img.onload = function(){
+                                if(img.width == img.height &&img.width <= 100){
+                                    that.$Notice.success({title:'上传成功！'});
+                                    that.avatarUrl = res.url;
+                                    that.avatarName = res.fileName;
+                                }else{
+                                    that.$Notice.error({title:"图片尺寸过大(100*100)！，请重新上传……"});
+                                }
+                            }
+                        }else{
+                            that.$Notice.error({title:res.message});
+                        }
+                    }
+                })
+            }else{
+                this.$Notice.error({title:"图片内存过大(100Kb)，请重新选择"});
+            }
+        },
+        submitUserAvatar(userId){
+            let that = this;
+            $.ajax({
+                url: config.ajaxUrls.updateUserAvatarUrl.replace(":id",userId),
+                type: "POST",
+                data: {avatarUrl: this.avatarName},
+                success(res){
+                    if(res.status == 200){
+                        that.$Notice.success({title:'操作成功'});
+                        that.fileName = "";
+                    }else{
+                        that.$Notice.error({title:res.message});
+                    }
+                }
+            })
+        },
         conPwdBlur(){
             if (this.pwdItem.newPwd.length >= 6) {
                 if(this.pwdItem.newPwd && this.pwdItem.confirmPassword != this.pwdItem.newPwd){
@@ -77,3 +133,9 @@ var index = new Vue({
         this.containerStyle.minHeight = document.documentElement.clientHeight - 140 + "px";
     }
 })
+$(document).ready(function(){
+    //用户头像上传
+    $('.uploadAvatar').click(function(){
+        $('.uploadAvatar_input').click();
+    });
+});

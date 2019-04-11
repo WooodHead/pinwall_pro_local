@@ -37,6 +37,7 @@ var config = {
         bindWeixinInfoByMobile:"/website/users/bindWeixinInfoByMobile",
         updatePwd:"/website/users/updatePwd",
         updatePwdWithMobileAndSmsCode:'/website/users/updatePwdWithMobileAndSmsCode',
+        updateUserAvatarUrl:"/website/users/updateUserAvatarUrl/:id",
         //searchEngine
         transterInsertDataToES:'/website/artifacts/transterInsertDataToES',
         transterUpdateDataToES:'/website/artifacts/transterUpdateDataToES',
