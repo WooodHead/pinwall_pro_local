@@ -51,20 +51,6 @@ var index = new Vue({
                 { title: '操作',key: 'opt', align: 'center',
             	    render: (h, params) => {
                         return h('div', [
-                            h('Button', {
-                                props: {
-                                    type: 'primary',
-                                    size: 'small'
-                                },
-                                style: {
-                                    marginRight: '5px'
-                                },
-                                on: {
-                                    click: () => {
-                                        this.editWork(params.index)
-                                    }
-                                }
-                            }, '编辑'),
                             h('poptip',{
                         	    props: {
                         		    confirm: true,
@@ -120,9 +106,6 @@ var index = new Vue({
                 this.aoData.offset = (page-1) * 12;
                 initData(this, this.aoData);
             }
-        },
-        editWork(index){
-            window.location.href = "/editUploadWork?id=" + this.dataList[index].Id + "&jobTag=" + this.dataList[index].jobTag;
         },
         deleteWork(index){
             let that = this;

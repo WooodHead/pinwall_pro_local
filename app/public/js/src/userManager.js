@@ -25,7 +25,7 @@ var index = new Vue({
                             }, this.dataList[params.index].fullname);
                     }
                 },
-                { title: '邮箱',key: 'email', align: 'center',minWidth:200},
+                { title: '手机号',key: 'mobile', align: 'center',minWidth:200},
                 { title: '上传作品数',key: 'artifactCount', align: 'center'},
                 { title: '点赞数',key: 'likeCount', align: 'center'},
                 { title: '发表言论',key: 'commentCount', align: 'center'},
@@ -85,7 +85,7 @@ var index = new Vue({
             totalPage:"",
             drawerShow:false,
             searchUserNameData:{fullname:"",offset:0,limit:12},
-            searchEmailData:{email:"",offset:0,limit:12},
+            searchMobileData:{mobile:"",offset:0,limit:12},
             searchValue:""
         }
     },
@@ -103,9 +103,9 @@ var index = new Vue({
                 this.searchUserNameData.fullname = this.searchValue;
                 initDataByUsername(this, this.searchUserNameData);
             } else if(this.groupModel == 2){
-                this.searchEmailData.offset = 0;
-                this.searchEmailData.email = this.searchValue;
-                initDataByEmail(this, this.searchEmailData);
+                this.searchMobileData.offset = 0;
+                this.searchMobileData.mobile = this.searchValue;
+                initDataByMobile(this, this.searchMobileData);
             }
         },
         /**
@@ -117,8 +117,8 @@ var index = new Vue({
                 this.searchUserNameData.offset = (page - 1) * 12;
                 initDataByUsername(this, this.searchUserNameData);
             } else if(this.groupModel == "2"){
-                this.searchEmailData.offset = (page - 1) * 12;
-                initDataByEmail(this, this.searchEmailData);
+                this.searchMobileData.offset = (page - 1) * 12;
+                initDataByMobile(this, this.searchMobileData);
             }
         },
         clickUserName(id){
@@ -142,7 +142,7 @@ var index = new Vue({
                         if (that.groupModel == "1") {
                             initDataByUsername(that, that.searchUserNameData);
                         } else if(that.groupModel == "2"){
-                            initDataByEmail(that, that.searchEmailData);
+                            initDataByMobile(that, that.searchMobileData);
                         }
                     } else {
                         that.$Notice.error({title:res.data});
@@ -175,12 +175,12 @@ function initDataByUsername(that,searchUserNameData){
         that.$Loading.error();
     })
 }
-function initDataByEmail(that, searchEmailData){
+function initDataByMobile(that, searchMobileData){
     that.$Loading.start();
     that.$http({
-        url: config.ajaxUrls.searchByEmail,
+        url: config.ajaxUrls.searchByMobile,
         method:"GET",
-        params:searchEmailData
+        params:searchMobileData
     }).then(function(res){
         if (res.body.status == 200) {
             that.$Loading.finish();

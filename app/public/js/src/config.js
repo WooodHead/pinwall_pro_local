@@ -12,7 +12,7 @@ var config = {
         suggestKeyWordsWithJobtag: '/website/search/suggestKeyWordsWithJobtag',
         searchByKeywordsAndJobtag: '/website/search/searchByKeywordsAndJobtag',
         searchByUsername:'/website/users/searchByUsername',
-        searchByEmail:'/website/users/searchByEmail',
+        searchByMobile:'/website/users/searchByMobile',
         searchArtifactsByNameOrTermName:'/website/search/searchArtifactsByNameOrTermName',
         searchComment:'/website/artifactComment/searchComment',
         // workFolder
