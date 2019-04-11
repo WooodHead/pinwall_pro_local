@@ -259,7 +259,7 @@ class Artifacts extends Service {
         }
       }
       catch(e){
-          ctx.getLogger('aliossLogger').info("delete file:"+deleteFileArray.join(',')+": "+e.message+"\n");
+          ctx.getLogger('fileLogger').info("delete file:"+deleteFileArray.join(',')+": "+e.message+"\n");
       }
 
       return true

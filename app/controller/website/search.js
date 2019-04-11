@@ -1,6 +1,7 @@
 'use strict'
 
 const BaseController = require('../BaseController');
+const path = require('path');
 
 class SearchController extends BaseController{
 
@@ -26,8 +27,10 @@ class SearchController extends BaseController{
       }).then(function (resp) {
           var hits = resp.hits;
           hits.hits.forEach((element,index)=>{
-            element._source.profileImage = helper.baseUrl + path.join(helper.imagePath, (element._source.userId).toString(), element._source.profileImage);
-            element._source.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element._source.user.Id).toString(), element._source.user.avatarUrl);
+            element._source.profileImage = ctx.helper.baseUrl + path.join(ctx.helper.imagePath, (element._source.userId).toString(), element._source.profileImage);
+            if(element._source.user.avatarUrl){
+              element._source.user.avatarUrl = ctx.helper.baseUrl + path.join(ctx.helper.othersPath, (element._source.user.Id).toString(), element._source.user.avatarUrl);
+            }
 
           });
           return hits;
@@ -62,10 +65,7 @@ class SearchController extends BaseController{
           }
         }
       }).then(function (resp) {
-        console.log(resp.suggest.key_suggest);
-          var hits = resp.suggest.key_suggest[0].options;
-
-          return hits;
+        return resp.suggest.key_suggest[0].options;
       }, function (err) {
           console.log(err.message);
       });
