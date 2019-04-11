@@ -26,7 +26,9 @@ class SearchController extends BaseController{
       }).then(function (resp) {
           var hits = resp.hits;
           hits.hits.forEach((element,index)=>{
-            element._source.profileImage = ctx.helper.signatureUrl(ctx.helper.imagePath + element._source.profileImage, "thumb_360_360");
+            element._source.profileImage = helper.baseUrl + path.join(helper.imagePath, (element._source.userId).toString(), element._source.profileImage);
+            element._source.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element._source.user.Id).toString(), element._source.user.avatarUrl);
+
           });
           return hits;
       }, function (err) {

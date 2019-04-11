@@ -65,9 +65,11 @@ module.exports = app => {
   router.put('website.users.updateAcviveByUserId', '/website/users/updateAcviveByUserId/:id', ajaxAuthCheck, controller.website.users.updateAcviveByUserId);
 
   router.post('website.users.createUser', '/website/users/createUser', controller.website.users.createUser);
-  router.put('website.users.updatePwd', '/website/users/updatePwd', controller.website.users.updatePwd);
+  router.put('website.users.updatePwd', '/website/users/updatePwd', ajaxAuthCheck,controller.website.users.updatePwd);
   router.put('website.users.updatePwdWithMobileAndSmsCode', '/website/users/updatePwdWithMobileAndSmsCode', controller.website.users.updatePwdWithMobileAndSmsCode);
   router.put('website.users.updateUserRole', '/website/users/updateUserRole', adminAuthCheck, controller.website.users.updateUserRole);
+  router.put('website.users.updateUserAvatarUrl', '/website/users/updateUserAvatarUrl/:id', ajaxAuthCheck, controller.website.users.updateUserAvatarUrl);
+
   router.get('website.users.searchByUsername', '/website/users/searchByUsername', controller.website.users.searchByUsername);
   router.get('website.users.searchByMobile', '/website/users/searchByMobile', adminAuthCheck, controller.website.users.searchByMobile);
 

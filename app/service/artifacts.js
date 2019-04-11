@@ -339,6 +339,9 @@ class Artifacts extends Service {
     const max = listData.length;
     if(max < limit){
         listData.forEach((element, index)=>{
+            if(element.user.avatarUrl){
+              element.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element.user.Id).toString(), element.user.avatarUrl);
+            }
             let profileImage = element.profileImage;
             element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), element.profileImage);
         });
@@ -355,8 +358,10 @@ class Artifacts extends Service {
       let result = new Array();
       for (let item of setData.values()) {
         let profileImage = listData[item].dataValues.profileImage;
-        listData[item].dataValues.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), profileImage);
-
+        listData[item].dataValues.profileImage = helper.baseUrl + path.join(helper.imagePath, (listData[item].dataValues.userId).toString(), profileImage);
+        if(listData[item].dataValues.user.avatarUrl){
+          listData[item].dataValues.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (listData[item].dataValues.user.Id).toString(), listData[item].dataValues.user.avatarUrl);
+        }
         result.push(listData[item]);
       }
 
@@ -368,6 +373,10 @@ class Artifacts extends Service {
     let resultObj = await this.ctx.model.Artifacts.getPersonalJobByUserId(query);
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
+
+      if(element.user.avatarUrl){
+        element.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element.user.Id).toString(), element.user.avatarUrl);
+      }
 
       element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), element.profileImage);
 

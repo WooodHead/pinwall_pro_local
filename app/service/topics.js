@@ -17,6 +17,10 @@ class Topics extends Service {
 
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
+      if(element.user.avatarUrl){
+        element.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element.user.Id).toString(), element.user.avatarUrl);
+      }
+
       for (let subElement of element.artifacts){
         subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), subElement.profileImage);
       }
@@ -38,6 +42,9 @@ class Topics extends Service {
 
     const helper = this.ctx.helper;
     resultObj.rows.forEach((element, index)=>{
+      if(element.user.avatarUrl){
+        element.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element.user.Id).toString(), element.user.avatarUrl);
+      }
       for (let subElement of element.artifacts){
         subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), subElement.profileImage);
       }
@@ -127,9 +134,12 @@ class Topics extends Service {
     });
 
     const helper = this.ctx.helper;
+    if(topic.rows.user.avatarUrl){
+      topic.rows.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (topic.rows.user.Id).toString(), topic.rows.user.avatarUrl);
+    }
 
     topic.rows.artifacts.forEach((element, index)=>{
-      element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), element.profileImage);
+      element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.user.Id).toString(), element.profileImage);
     });
 
     return topic;

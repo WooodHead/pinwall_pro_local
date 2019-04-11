@@ -186,7 +186,6 @@ module.exports = app => {
       attributes:['Id','mobile','fullname','nickname','avatarUrl','password']
     });
   }
-
   Users.loginFindByUserWithMobile = async function (mobile){
     return await this.findOne({
       where:{
@@ -410,6 +409,16 @@ module.exports = app => {
     }
 
     return this.findAndCountAll(condition);
+  }
+
+  Users.updateUserAvatarUrl = async function(data){
+    return await this.update({
+      avatarUrl:data.avatarUrl
+    },{
+      where:{
+        Id:data.userId
+      }
+    });
   }
 
   return Users;

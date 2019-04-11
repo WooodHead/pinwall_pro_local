@@ -213,6 +213,24 @@ class UsersController extends BaseController{
       super.failure('获取数据失败');
     }
   }
+
+  async updateUserAvatarUrl(){
+    const ctx = this.ctx;
+    const userId = ctx.helper.parseInt(ctx.params.id);
+    const avatarUrl = ctx.request.body.avatarUrl;
+
+    const data = {
+      userId:userId,
+      avatarUrl:avatarUrl
+    };
+    try{
+      let result = await ctx.service.users.updateUserAvatarUrl(data);
+      super.success(result);
+    }
+    catch(e){
+      super.failure('更新数据失败');
+    }
+  }
 }
 
 module.exports = UsersController;

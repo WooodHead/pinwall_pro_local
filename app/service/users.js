@@ -21,7 +21,7 @@ class Users extends Service {
     const user = await this.ctx.model.Users.findUserById(id);
     if(user.avatarUrl){
       let helper = this.ctx.helper;
-      user.avatarUrl = helper.baseUrl + path.join(helper.imagePath, (user.userId).toString(), user.avatarUrl);
+      user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (user.Id).toString(), user.avatarUrl);
     }
     return user;
   }
@@ -102,11 +102,21 @@ class Users extends Service {
   }
 
   async findByUserWithMobile(mobile) {
-    return await this.ctx.model.Users.findByUserWithMobile(mobile);
+    let user = await this.ctx.model.Users.findByUserWithMobile(mobile);
+    if(user.avatarUrl){
+      let helper = this.ctx.helper;
+      user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (user.Id).toString(), user.avatarUrl);
+    }
+    return user;
   }
 
   async loginFindByUserWithMobile(mobile) {
-    return await this.ctx.model.Users.loginFindByUserWithMobile(mobile);
+    let user = await this.ctx.model.Users.loginFindByUserWithMobile(mobile);
+    if(user.avatarUrl){
+      let helper = this.ctx.helper;
+      user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (user.Id).toString(), user.avatarUrl);
+    }
+    return user;
   }
 
   async updateAcviveByUserId(userId) {
@@ -214,6 +224,9 @@ class Users extends Service {
     return await this.ctx.model.Users.searchByMobile(query);
   }
 
+  async updateUserAvatarUrl(data){
+    return await this.ctx.model.Users.updateUserAvatarUrl(data);
+  }
 }
 
 module.exports = Users;
