@@ -61,8 +61,10 @@ var index = new Vue({
                                     that.$Notice.error({title:"图片尺寸过大(100*100)！，请重新上传……"});
                                 }
                             }
-                        }else{
-                            that.$Notice.error({title:res.message});
+                        }else if(res.status == 500){
+                            that.$Notice.error({title:"上传出错"});
+                        }else if(res.status == 999){
+                            that.$Notice.error({title:res.data.message});
                         }
                     }
                 })

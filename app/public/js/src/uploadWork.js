@@ -63,16 +63,22 @@ var container = new Vue({
                     contentType: false,
                     data: formdata,
                     success(res){
-                        let img = new Image();
-                        img.src = res.url;
-                        img.onload = function(){
-                            if(img.width == img.height && img.width >= 600 && img.width <= 800){
-                                that.$Notice.success({title:'上传成功！'});
-                                that.step1_upload_fengmian_src = res.url;
-                                that.dataItem.profileImage = res.fileName;
-                            }else{
-                                that.$Notice.error({title:"图片不符合尺寸要求！，请重新上传……"});
+                        if(res.status == 200){
+                            let img = new Image();
+                            img.src = res.url;
+                            img.onload = function(){
+                                if(img.width == img.height && img.width >= 600 && img.width <= 800){
+                                    that.$Notice.success({title:'上传成功！'});
+                                    that.step1_upload_fengmian_src = res.url;
+                                    that.dataItem.profileImage = res.fileName;
+                                }else{
+                                    that.$Notice.error({title:"图片不符合尺寸要求！，请重新上传……"});
+                                }
                             }
+                        }else if(res.status == 500){
+                            that.$Notice.error({title:"上传出错"});
+                        }else if(res.status == 999){
+                            that.$Notice.error({title:res.data.message});
                         }
                     }
                 })
@@ -95,35 +101,42 @@ var container = new Vue({
                 contentType: false,
                 data: formdata,
                 success(res){
-                    that.$Notice.success({title:'上传成功！'});
-                    that.step2_upload_neirong_src = that.step2_upload_neirong_src.concat(res.url);
+                    if(res.status == 200){
+                        that.$Notice.success({title:'上传成功！'});
+                        that.step2_upload_neirong_src = that.step2_upload_neirong_src.concat(res.url);
 
-                    let subarr = new Object();
-                    if (that.dataItem.Id) {
-                        subarr.position = that.step2_upload_neirong_src.length - 1;
-                    }else if(that.dataItem.topicId){
-                        subarr.position = that.step2_upload_neirong_src.length - 1;
-                    }else if(that.dataItem.jobTag == 2){
-                        subarr.position = that.step2_upload_neirong_src.length - 1;
-                    }else{
-                        subarr.position = "";
+                        let subarr = new Object();
+                        if (that.dataItem.Id) {
+                            subarr.position = that.step2_upload_neirong_src.length - 1;
+                        }else if(that.dataItem.topicId){
+                            subarr.position = that.step2_upload_neirong_src.length - 1;
+                        }else if(that.dataItem.jobTag == 2){
+                            subarr.position = that.step2_upload_neirong_src.length - 1;
+                        }else{
+                            subarr.position = "";
+                        }
+                        subarr.name = "";
+                        subarr.filename = "";
+                        subarr.imagename = files.target.files[0].name;
+                        subarr.description = "";
+                        subarr.type = 1;
+                        subarr.profileImage = res.fileName;
+                        subarr.mediaFile = "";
+                        subarr.viewUrl = "";
+                        subarr.viewImgUrl = res.url;
+                        that.step2_between_arr.push(subarr);
+
+                        let progress_subarr = new Object();
+                        progress_subarr.progress = 0;
+                        progress_subarr.fileTrueName = "";
+                        that.file_otherinof_arr.push(progress_subarr);
+                        that.neirong_truename_arr.push(files.target.files[0].name);
+                    }else if(res.status == 500){
+                        that.$Notice.error({title:"上传出错"});
+                    }else if(res.status == 999){
+                        that.$Notice.error({title:res.data.message});
                     }
-                    subarr.name = "";
-                    subarr.filename = "";
-                    subarr.imagename = files.target.files[0].name;
-                    subarr.description = "";
-                    subarr.type = 1;
-                    subarr.profileImage = res.fileName;
-                    subarr.mediaFile = "";
-                    subarr.viewUrl = "";
-                    subarr.viewImgUrl = res.url;
-                    that.step2_between_arr.push(subarr);
 
-                    let progress_subarr = new Object();
-                    progress_subarr.progress = 0;
-                    progress_subarr.fileTrueName = "";
-                    that.file_otherinof_arr.push(progress_subarr);
-                    that.neirong_truename_arr.push(files.target.files[0].name);
                 }
             })
         },
@@ -145,11 +158,17 @@ var container = new Vue({
                 contentType: false,
                 data: formdata,
                 success(res){
-                    that.step2_upload_neirong_src.splice(that.which_artifact_assets,1,res.url);
-                    that.step2_between_arr[that.which_artifact_assets].imagename = files.target.files[0].name;
-                    that.step2_between_arr[that.which_artifact_assets].viewImgUrl = res.url;
-                    that.step2_between_arr[that.which_artifact_assets].profileImage = res.fileName;
-                    that.neirong_truename_arr[that.which_artifact_assets] = files.target.files[0].name;
+                    if(res.status == 200){
+                        that.step2_upload_neirong_src.splice(that.which_artifact_assets,1,res.url);
+                        that.step2_between_arr[that.which_artifact_assets].imagename = files.target.files[0].name;
+                        that.step2_between_arr[that.which_artifact_assets].viewImgUrl = res.url;
+                        that.step2_between_arr[that.which_artifact_assets].profileImage = res.fileName;
+                        that.neirong_truename_arr[that.which_artifact_assets] = files.target.files[0].name;
+                    }else if(res.status == 500){
+                        that.$Notice.error({title:"上传出错"});
+                    }else if(res.status == 999){
+                        that.$Notice.error({title:res.data.message});
+                    }
                 }
             })
         },
@@ -180,11 +199,17 @@ var container = new Vue({
                     return xhr;
                 },
                 success(res){
-                    that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
-                    that.step2_between_arr[that.which_artifact_assets].type = 4;
-                    that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
-                    that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
-                    that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
+                    if(res.status == 200){
+                        that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
+                        that.step2_between_arr[that.which_artifact_assets].type = 4;
+                        that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
+                        that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
+                        that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
+                    }else if(res.status == 500){
+                        that.$Notice.error({title:"上传出错"});
+                    }else if(res.status == 999){
+                        that.$Notice.error({title:res.data.message});
+                    }
                 }
             })
         },
@@ -216,11 +241,17 @@ var container = new Vue({
                     return xhr;
                 },
                 success(res){
-                    that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
-                    that.step2_between_arr[that.which_artifact_assets].type = 2;
-                    that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
-                    that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
-                    that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
+                    if(res.status == 200){
+                        that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
+                        that.step2_between_arr[that.which_artifact_assets].type = 2;
+                        that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
+                        that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
+                        that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
+                    }else if(res.status == 500){
+                        that.$Notice.error({title:"上传出错"});
+                    }else if(res.status == 999){
+                        that.$Notice.error({title:res.data.message});
+                    }
                 }
             })
         },
@@ -252,11 +283,17 @@ var container = new Vue({
                     return xhr;
                 },
                 success(res){
-                    that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
-                    that.step2_between_arr[that.which_artifact_assets].type = 3;
-                    that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
-                    that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
-                    that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
+                    if(res.status == 200){    
+                        that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
+                        that.step2_between_arr[that.which_artifact_assets].type = 3;
+                        that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
+                        that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
+                        that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
+                    }else if(res.status == 500){
+                        that.$Notice.error({title:"上传出错"});
+                    }else if(res.status == 999){
+                        that.$Notice.error({title:res.data.message});
+                    }    
                 }
             })
         },
