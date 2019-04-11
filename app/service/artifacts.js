@@ -45,6 +45,10 @@ class Artifacts extends Service {
 
     artifact.profileImage = helper.baseUrl + path.join(helper.imagePath, (artifact.userId).toString(), artifact.profileImage);
 
+    if(artifact.user.avatarUrl){
+      artifact.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (artifact.user.Id).toString(), artifact.user.avatarUrl);
+    }
+
     for (let subElement of artifact.artifact_assets){
 
       subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (artifact.userId).toString(), subElement.profileImage);

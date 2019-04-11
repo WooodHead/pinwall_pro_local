@@ -15,7 +15,7 @@ module.exports = appInfo => {
     port: 3306,
     username: 'root',
     password: 'root',
-    database: 'pinwall_pro',
+    database: 'pinwall_pro_local',
     timezone:'+08:00',
     define: {
       freezeTableName: true,

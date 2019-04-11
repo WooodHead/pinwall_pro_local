@@ -1,26 +1,37 @@
 'use strict';
 
 const Service = require('egg').Service;
+const path = require('path');
 
 class ArtifactComment extends Service {
 
   async list({ offset = 0, limit = 10}) {
-    return this.ctx.model.ArtifactComments.listComments({
+    let resultObj = await this.ctx.model.ArtifactComments.listComments({
       offset,
       limit,
     });
+    return resultObj;
   }
 
   async findByArtifactIdWithPage({ offset = 0, limit = 10, artifactId = 0}) {
-    return this.ctx.model.ArtifactComments.findByArtifactIdWithPage({
+    let resultObj = await this.ctx.model.ArtifactComments.findByArtifactIdWithPage({
       offset,
       limit,
       artifactId,
     });
+
+    const helper = this.ctx.helper;
+    resultObj.rows.forEach((element, index)=>{
+      if(element.user.avatarUrl){
+        element.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element.user.Id).toString(), element.user.avatarUrl);
+      }
+    });
+
+    return resultObj;
   }
 
   async findCommentById(id) {
-    return this.ctx.model.ArtifactComments.findCommentById(id);
+    return await this.ctx.model.ArtifactComments.findCommentById(id);
   }
 
   async create(artifactComments) {
@@ -59,7 +70,7 @@ class ArtifactComment extends Service {
       await transaction.rollback();
       return false
     }
-    
+
     return artifact;
   }
 
