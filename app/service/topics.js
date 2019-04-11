@@ -22,7 +22,7 @@ class Topics extends Service {
       }
 
       for (let subElement of element.artifacts){
-        subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), subElement.profileImage);
+        subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (subElement.userId).toString(), subElement.profileImage);
       }
     });
 
@@ -46,7 +46,7 @@ class Topics extends Service {
         element.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element.user.Id).toString(), element.user.avatarUrl);
       }
       for (let subElement of element.artifacts){
-        subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.userId).toString(), subElement.profileImage);
+        subElement.profileImage = helper.baseUrl + path.join(helper.imagePath, (subElement.userId).toString(), subElement.profileImage);
       }
     });
 
