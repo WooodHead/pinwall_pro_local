@@ -48,7 +48,6 @@ var index = new Vue({
                     contentType: false,
                     data: formdata,
                     success(res){
-                        console.log(res);
                         if(res.status == 200){
                             let img = new Image();
                             img.src = res.url;
@@ -76,7 +75,7 @@ var index = new Vue({
             let that = this;
             $.ajax({
                 url: config.ajaxUrls.updateUserAvatarUrl.replace(":id",userId),
-                type: "POST",
+                type: "PUT",
                 data: {avatarUrl: this.avatarName},
                 success(res){
                     if(res.status == 200){
