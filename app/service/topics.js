@@ -140,6 +140,7 @@ class Topics extends Service {
 
     topic.rows.artifacts.forEach((element, index)=>{
       element.profileImage = helper.baseUrl + path.join(helper.imagePath, (element.user.Id).toString(), element.profileImage);
+      element.user.avatarUrl = helper.baseUrl + path.join(helper.othersPath, (element.user.Id).toString(), element.user.avatarUrl);
     });
 
     return topic;

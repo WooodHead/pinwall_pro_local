@@ -15,12 +15,19 @@ module.exports = app => {
   router.get('/index', controller.home.index);
   router.get('/login', controller.home.login);
   router.get('/relogin', controller.home.relogin);
+  router.get('/wxRelogin', controller.home.wxRelogin);
+  router.get('/wxCompleteInfo', controller.home.wxCompleteInfo);
 
   router.post('/login',app.passport.authenticate('local', {
        successReturnToOrRedirect : '/index',successFlash: true,
        failureRedirect: '/relogin',failureFlash: true }));
 
+  router.get('/loginByWeixin',app.passport.authenticate('loginByWeixin', {
+       successReturnToOrRedirect : '/website/users/bindWeixin',successFlash: true,
+       failureRedirect: '/relogin',failureFlash: true,state: 'hello-pinwall', }));
+
   router.get('/logout', controller.home.logout);
+  router.get('/wxLogin', controller.website.users.wxLogin);
 
   router.get('/upload', controller.home.upload);
   router.get('/uploadWork/:jobTag', pageAuthCheck, controller.home.uploadWork);

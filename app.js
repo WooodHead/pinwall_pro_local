@@ -37,7 +37,33 @@ module.exports = app => {
     }
   });
 
-  
+  app.passport.use('loginByWeixin', new WeixinStrategy({
+    clientID: '',
+    clientSecret: '',
+    callbackURL: '/loginByWeixin',
+    requireState: true,
+    scope: 'snsapi_login',
+
+  }, function(accessToken, refreshToken, profile, done) {
+
+    const user = {
+      Id:0,
+      email:'',
+      fullname:'',
+    };
+    user.openid = profile._json.openid;
+    user.nickname = profile._json.nickname;
+    user.sex = profile._json.sex;
+    user.language = profile._json.language;
+    user.city = profile._json.city;
+    user.province = profile._json.province;
+    user.country = profile._json.country;
+    user.headimageurl = profile._json.headimgurl;
+    user.unionid = profile._json.unionid;
+
+    done(null,user);
+  }));
+
   // 将用户信息序列化后存进 session 里面，一般需要精简，只保存个别字段
   app.passport.serializeUser(async (ctx, user) => {
     // 处理 user

@@ -122,6 +122,95 @@ class UsersController extends BaseController{
     return await ctx.service.users.findByUnionId(unionId);
   }
 
+  async bindWeixin(){
+    const ctx = this.ctx;
+    const unionId = ctx.user.unionid;
+    const user = await ctx.service.users.findByUnionId(unionId);
+    if(user){
+      if(user.Id && user.mobile){
+          ctx.user.Id = user.Id;
+          ctx.user.mobile = user.mobile;
+          ctx.user.fullname = user.fullname;
+          ctx.user.roles = user.roles;
+          ctx.user.avatarUrl = user.avatarUrl;
+          ctx.redirect('/index');
+
+      }else{
+        ctx.redirect('/completeInfo');
+      }
+    }
+    else{
+      ctx.redirect('/completeInfo');
+    }
+  }
+
+  async bindWeixinInfoByMobile(){
+    const ctx = this.ctx;
+    const mobile = ctx.request.body.mobile;
+    const smsCode = ctx.request.body.smsCode;
+
+    const result = await ctx.service.users.bindWeixinInfoByMobile(mobile,smsCode,ctx.user);
+    try{
+      if (result){
+        super.success('绑定成功，请登录!');
+      }
+      else{
+        super.failure('绑定失败!');
+      }
+    }
+    catch(e){
+      super.failure(e.message);
+    }
+
+  }
+
+  async createWxUser(){
+    const ctx = this.ctx;
+    const mobile = ctx.request.body.mobile;
+    const fullname = ctx.request.body.fullname;
+    const password = ctx.request.body.password;
+    const captcha = ctx.request.body.captchaText;
+    const smsCode = ctx.request.body.smsCode;
+
+    if (captcha == ctx.session.captcha){
+      if (ctx.user){
+        let user = {
+          mobile:mobile,
+          fullname:fullname,
+          password:password,
+          smsCode:smsCode,
+          openId:ctx.user.openid,
+          nickname:ctx.user.nickname,
+          gender:ctx.user.sex,
+          city:ctx.user.city,
+          province:ctx.user.province,
+          country:ctx.user.country,
+          avatarUrl:ctx.user.headimageurl,
+          unionId:ctx.user.unionid,
+        };
+        try{
+          const result = await ctx.service.users.createUser(user);
+          if (result){
+            super.success('注册成功!');
+          }
+          else{
+            super.failure('创建失败!');
+          }
+        }
+        catch(e){
+          super.failure(e.message);
+        }
+
+      }
+      else{
+        super.failure('微信扫描信息有误，请重新扫描!');
+      }
+    }
+    else{
+      super.failure('验证码不正确!');
+    }
+  }
+
   async updatePwd(){
     const ctx = this.ctx;
     const password = ctx.request.body.password;
