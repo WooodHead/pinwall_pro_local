@@ -18,6 +18,7 @@ class UsersController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -29,6 +30,7 @@ class UsersController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -37,8 +39,7 @@ class UsersController extends BaseController{
     const ctx = this.ctx;
     try{
       let data = ctx.request.body;
-      if (data.captchaText != thi
-        s.ctx.session.captcha){
+      if (data.captchaText != this.ctx.session.captcha){
         super.failure('验证码错误!');
       }
       else{
@@ -48,6 +49,7 @@ class UsersController extends BaseController{
 
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -64,6 +66,7 @@ class UsersController extends BaseController{
       super.success('更新成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -77,6 +80,7 @@ class UsersController extends BaseController{
       super.success('删除成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -90,6 +94,7 @@ class UsersController extends BaseController{
       super.success('更新成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -179,6 +184,7 @@ class UsersController extends BaseController{
       }
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
 
@@ -218,6 +224,7 @@ class UsersController extends BaseController{
           }
         }
         catch(e){
+          ctx.logger.error(e.message);
           super.failure(e.message);
         }
 
@@ -299,7 +306,7 @@ class UsersController extends BaseController{
       super.success(result);
     }
     catch(e){
-        console.log(e);
+      ctx.logger.error(e.message);
       super.failure('获取数据失败');
     }
   }
@@ -319,6 +326,7 @@ class UsersController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure('获取数据失败');
     }
   }
@@ -337,6 +345,7 @@ class UsersController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure('更新数据失败');
     }
   }

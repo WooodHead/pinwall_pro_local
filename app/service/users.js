@@ -56,6 +56,7 @@ class Users extends Service {
 
               return createUserObj;
             } catch (e) {
+              this.ctx.logger.error(e.message);
               await transaction.rollback();
               return false;
             }
@@ -92,6 +93,7 @@ class Users extends Service {
       return true
     } catch (e) {
       await transaction.rollback();
+      this.ctx.logger.error(e.message);
       return false
     }
 
@@ -164,6 +166,7 @@ class Users extends Service {
       await this.ctx.model.Users.updatePwd(userId, newPwd);
       return true;
     } catch (e) {
+      this.ctx.logger.error(e.message);
       return false;
     }
 
@@ -200,6 +203,7 @@ class Users extends Service {
       }
 
     } catch (e) {
+      this.ctx.logger.error(e.message);
       return {
         success: false,
         message: e.message
@@ -212,6 +216,7 @@ class Users extends Service {
       await this.ctx.model.UserRole.updateUserRole(userId, operation);
       return true;
     } catch (e) {
+      this.ctx.logger.error(e.message);
       return false;
     }
   }

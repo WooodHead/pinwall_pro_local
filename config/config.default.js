@@ -1,4 +1,5 @@
 'use strict';
+const path = require('path');
 
 module.exports = appInfo => {
   const config = exports = {};
@@ -90,6 +91,31 @@ module.exports = appInfo => {
 
   config.multipart = {
     fileExtensions: [ '.pdf' ] // 增加对 pdf 扩展名的文件支持
+  };
+
+  config.logger = {
+    dir: 'D:\\node_pinwall_pro_local',
+    appLogName: `${appInfo.name}-web.log`,
+    coreLogName: 'egg-web.log',
+    agentLogName: 'egg-agent.log',
+    errorLogName: 'common-error.log',
+  };
+
+  config.customLogger = {
+    elasticLogger:{
+      file: path.join(appInfo.root,'logs/transfer.log'),
+    },
+    aliossLogger:{
+      file: path.join(appInfo.root,'logs/alioss.log'),
+    },
+  };
+
+  config.logrotator = {
+    filesRotateBySize: [
+      path.join(appInfo.root, 'logs', appInfo.name, '-web.log'),
+      path.join(appInfo.root, 'logs', appInfo.name, 'egg-web.log'),
+    ],
+    maxFileSize: 0.3 * 1024 * 1024 * 1024,
   };
 
   return config;

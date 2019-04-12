@@ -25,6 +25,7 @@ class ArtifactMedalLike extends Service {
           return true
         } catch (e) {
           await transaction.rollback();
+          this.ctx.logger.error(e.message);
           return false
         }
 
@@ -47,6 +48,7 @@ class ArtifactMedalLike extends Service {
         return true
       } catch (e) {
         await transaction.rollback();
+        this.ctx.logger.error(e.message);
         return false
       }
     }

@@ -16,6 +16,7 @@ class TermsController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -28,6 +29,7 @@ class TermsController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -39,6 +41,7 @@ class TermsController extends BaseController{
       super.success('创建成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -55,6 +58,7 @@ class TermsController extends BaseController{
       super.success('更新成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -68,6 +72,7 @@ class TermsController extends BaseController{
       super.success('删除成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }

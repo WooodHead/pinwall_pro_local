@@ -116,7 +116,7 @@ class UpdateElasticsearch extends Subscription {
     }
 
     if(updateObject){
-      await ctx.service.esSyncData.update(2, insertSuggestTime);
+      await ctx.service.esSyncData.update(2, updatePinwallTime);
     }
   }
 }

@@ -20,6 +20,7 @@ class SmsMessageController extends BaseController{
       }
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -32,6 +33,7 @@ class SmsMessageController extends BaseController{
       ctx.body = await ctx.service.smsMessage.getDataByCondition({mobile:mobile,code:smsCode});
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }

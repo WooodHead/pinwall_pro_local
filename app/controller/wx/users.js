@@ -49,6 +49,7 @@ class UsersController extends BaseController {
         super.failure('操作失败！请重新操作');
       }
     } catch (e) {
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
 
@@ -93,6 +94,7 @@ class UsersController extends BaseController {
         super.failure('绑定失败');
       }
     } catch (e) {
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -134,6 +136,7 @@ class UsersController extends BaseController {
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }

@@ -25,6 +25,7 @@ class TopicsController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -37,6 +38,7 @@ class TopicsController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -54,6 +56,7 @@ class TopicsController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -67,7 +70,7 @@ class TopicsController extends BaseController{
       ctx.body = result;
     }
     catch(e){
-      console.log(e);
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }

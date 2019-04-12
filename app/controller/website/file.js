@@ -59,6 +59,7 @@ class FileController extends BaseController {
           result.fileName = filename;
         } catch (err) {
             //如果出现错误，关闭管道
+          ctx.logger.error(err.message);
           await sendToWormhole(stream);
           result.status = 500;
         }

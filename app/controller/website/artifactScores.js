@@ -16,6 +16,7 @@ class ArtifactScoresController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -28,6 +29,7 @@ class ArtifactScoresController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -39,7 +41,7 @@ class ArtifactScoresController extends BaseController{
       super.success('打分成功!');
     }
     catch(e){
-        console.log(e);
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -56,6 +58,7 @@ class ArtifactScoresController extends BaseController{
       super.success('更新成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -69,6 +72,7 @@ class ArtifactScoresController extends BaseController{
       super.success('删除成功!');
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -86,6 +90,7 @@ class ArtifactScoresController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -102,6 +107,7 @@ class ArtifactScoresController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }

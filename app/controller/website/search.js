@@ -41,6 +41,7 @@ class SearchController extends BaseController{
       super.success(hits);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -73,6 +74,7 @@ class SearchController extends BaseController{
       super.success(hits);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -115,6 +117,7 @@ class SearchController extends BaseController{
       super.success(hits);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -151,6 +154,7 @@ class SearchController extends BaseController{
       super.success(hits);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -175,6 +179,7 @@ class SearchController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }

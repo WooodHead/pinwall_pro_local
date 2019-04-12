@@ -18,6 +18,7 @@ class ArtifactsController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -30,6 +31,7 @@ class ArtifactsController extends BaseController{
       super.success(result);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -79,6 +81,7 @@ class ArtifactsController extends BaseController{
       ctx.body = await ctx.service.artifacts.getMedalDataByRandom(limit);
     }
     catch(e){
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -96,7 +99,7 @@ class ArtifactsController extends BaseController{
       super.success(result);
     }
     catch(e){
-      console.log(e);
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }
@@ -115,7 +118,7 @@ class ArtifactsController extends BaseController{
       super.success(result);
     }
     catch(e){
-      console.log(e);
+      ctx.logger.error(e.message);
       super.failure(e.message);
     }
   }

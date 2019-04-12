@@ -75,7 +75,7 @@ class Topics extends Service {
       await transaction.commit();
       return true
     } catch (e) {
-     console.log(e.message);
+      this.ctx.logger.error(e.message);
       await transaction.rollback();
       return false
     }
@@ -106,7 +106,7 @@ class Topics extends Service {
 
       return true
     } catch (e) {
-        console.log(e);
+      this.ctx.logger.error(e.message);
       await transaction.rollback();
       return false
     }

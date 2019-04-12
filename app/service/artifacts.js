@@ -92,6 +92,7 @@ class Artifacts extends Service {
         return true
       } catch (e) {
         await transaction.rollback();
+        this.ctx.logger.error(e.message);
         return false
       }
     }
@@ -131,6 +132,7 @@ class Artifacts extends Service {
             return true
           } catch (e) {
             await transaction.rollback();
+            this.ctx.logger.error(e.message);
             return false
           }
         }
@@ -218,7 +220,7 @@ class Artifacts extends Service {
         }
       }
       catch(e){
-        ctx.getLogger('elasticLogger').info("update ID:"+id+": "+e.message+"\n");
+        ctx.getLogger('elasticLogger').error("update ID:"+id+": "+e.message+"\n");
       }
 
       let deleteFileArray = new Array();
@@ -259,12 +261,13 @@ class Artifacts extends Service {
         }
       }
       catch(e){
-          ctx.getLogger('fileLogger').info("delete file:"+deleteFileArray.join(',')+": "+e.message+"\n");
+          ctx.getLogger('fileLogger').error("delete file:"+deleteFileArray.join(',')+": "+e.message+"\n");
       }
 
       return true
     } catch (e) {
       await transaction.rollback();
+      ctx.logger.error(e.message);
       return false
     }
   }
@@ -327,12 +330,13 @@ class Artifacts extends Service {
 
       }
       catch(e){
-          ctx.getLogger('aliossLogger').info("delete ID:"+deleteFileArray.join(',')+": "+e.message+"\n");
+          ctx.getLogger('aliossLogger').error("delete ID:"+deleteFileArray.join(',')+": "+e.message+"\n");
       }
       await transaction.commit();
       return true
     } catch (e) {
       await transaction.rollback();
+      ctx.logger.error(e.message);
       return false
     }
   }
@@ -440,6 +444,7 @@ class Artifacts extends Service {
       return true;
     }
     catch(e){
+      ctx.logger.error(e.message);
       return false;
     }
   }
@@ -475,6 +480,7 @@ class Artifacts extends Service {
       return true;
     }
     catch(e){
+      ctx.logger.error(e.message);
       return false;
     }
   }
