@@ -18,6 +18,7 @@ module.exports = appInfo => {
     password: 'root',
     database: 'pinwall_pro_local',
     timezone:'+08:00',
+    logging: true,
     define: {
       freezeTableName: true,
       charset: 'utf8',
