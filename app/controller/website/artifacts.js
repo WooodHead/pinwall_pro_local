@@ -40,7 +40,7 @@ class ArtifactsController extends BaseController{
     artifact.userId = ctx.user.Id;
     let result = await ctx.service.artifacts.create(ctx.request.body);
     if(result){
-      super.success('创建成功!');
+      super.success(ctx.__('createSuccess'));
     }
     else{
       super.failure("操作失败或者作业荚已关闭!");
