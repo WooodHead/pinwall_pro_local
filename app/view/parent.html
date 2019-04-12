@@ -29,7 +29,7 @@
 
 				{% endblock %}
 
-		        <a class="search" href="/search">探索...</a>
+		        <a class="search" href="/search">{{__('search')}}...</a>
 
 				{% if user.Id %}
 				<a href="/users/{{user.Id}}?jobTag=2" class="user_profile">
@@ -50,7 +50,7 @@
 				{% else %}
 				<div class="login">
 					<i-button type="text" ghost="true" to="/login" style="">
-						<icon type="md-person" style="font-size: 30px;" color="#fff"></icon>登陆/注册
+						<icon type="md-person" style="font-size: 30px;" color="#fff"></icon>{{__('login/register')}}
 					</i-button>
 				</div>
 				{% endif %}

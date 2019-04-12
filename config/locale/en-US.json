@@ -2,5 +2,23 @@
   "email": "email",
   "login": "phone",
   "createdAt": "create",
-  "createSuccess":"creat success"
+  "createSuccess":"creat success",
+
+  "Home":"Home",
+  "GraduateCourse":"Graduate course",
+  "Course":"Course",
+  "Search":"Search",
+  "Register/login":"Register/login",
+  "My":"My",
+  "MySampleReels":"My sample reels",
+  "MyCourse":"My course",
+  "NewGaduate":"New graduate course/new course",
+  "UsersManager":"Users",
+  "WorksManager":"Works",
+  "CommentsManager":"Comments",
+  "UpdateSearchEngine":"Update search engine",
+  "PersonalInfo":"Personal information",
+  "Logout":"Logout",
+
+
 }
