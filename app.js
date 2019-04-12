@@ -38,8 +38,8 @@ module.exports = app => {
   });
 
   app.passport.use('loginByWeixin', new WeixinStrategy({
-    clientID: '',
-    clientSecret: '',
+    clientID: 'wxasdawqdasd',
+    clientSecret: 'asdadsadadsqweqw',
     callbackURL: '/loginByWeixin',
     requireState: true,
     scope: 'snsapi_login',

@@ -37,12 +37,13 @@ class UsersController extends BaseController{
     const ctx = this.ctx;
     try{
       let data = ctx.request.body;
-      if (data.captchaText != this.ctx.session.captcha){
+      if (data.captchaText != thi
+        s.ctx.session.captcha){
         super.failure('验证码错误!');
       }
       else{
         const user = await ctx.service.users.createUser(data);
-        super.success('创建成功!');
+        super.success(ctx.__('createSuccess'));
       }
 
     }
@@ -116,6 +117,25 @@ class UsersController extends BaseController{
     }
   }
 
+  async wxLogin(){
+    const code = this.ctx.query.code;
+    const state = this.ctx.query.state;
+    if (state == 'hello-pinwall'){
+
+      const accessTempObject = await wxUtil.getAccessToken(this.ctx.helper.wx_appid,this.ctx.helper.wx_secret,code);
+      const accessObject = JSON.parse(accessTempObject);
+      if(!accessObject.errcode){
+        const userObject = await wxUtil.getUserInfo(accessObject.access_token,accessObject.openid);
+        super.success(userObject);
+      }
+      else{
+        super.failure(accessObject.errmsg);
+      }
+    }
+    else{
+      super.failure('授权失败!');
+    }
+  }
 
   async getUserByUnionId(){
     const unionId = this.ctx.query.unionId;
