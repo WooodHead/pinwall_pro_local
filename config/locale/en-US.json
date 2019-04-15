@@ -114,13 +114,13 @@
     "Save": "Save",
     "PwdTitle": "Set a memorable password.",
     "OldPwd": "Old password",
-    "EnterOldPwd": "	Enter the old password",
+    "EnterOldPwd": "Enter the old password",
     "NewPwd": "New password",
     "EnterNewPwd": "Enter the new password",
 
     "Who'sSampleReels": "’s sample reels",
     "CreateOrSetPod": "Create or set a new pod",
-    "EngineRules":"	Enter the relevant work id and concatenate it with a semicolon comma",
+    "EngineRules":"Enter the relevant work id and concatenate it with a semicolon comma",
 
     "synchronousFailed":"synchronous failed",
     "noDataNeedToSync":"No data needs to be synchronized",
@@ -147,4 +147,5 @@
     "authError":"authorization failed",
     "bindSuccess":"bind success, please log in",
     "bindFailed":"bind failed",
-    "notActiveByEmail":"not active and please active by email",
+    "notActiveByEmail":"not active and please active by email"
+}
