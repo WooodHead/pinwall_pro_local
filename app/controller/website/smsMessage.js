@@ -13,10 +13,10 @@ class SmsMessageController extends BaseController{
     try{
       const result = await ctx.service.smsMessage.createSmsMessage(query);
       if(result){
-        super.success('发送成功!');
+        super.success(ctx.__('sendSuccessful'));
       }
       else{
-        super.failure('发送失败.信息每天不能超过10条.');
+        super.failure(ctx.__('sendFailed'));
       }
     }
     catch(e){

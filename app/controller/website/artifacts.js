@@ -42,10 +42,10 @@ class ArtifactsController extends BaseController{
     artifact.userId = ctx.user.Id;
     let result = await ctx.service.artifacts.create(ctx.request.body);
     if(result){
-      super.success(ctx.__('createSuccess'));
+      super.success(ctx.__('createdSuccess'));
     }
     else{
-      super.failure("操作失败或者作业荚已关闭!");
+      super.failure(ctx.__('opFailedOrPodClosed'));
     }
   }
 
@@ -55,10 +55,10 @@ class ArtifactsController extends BaseController{
     const updates = ctx.request.body;
     let result = await ctx.service.artifacts.update({ id, updates });
     if(result){
-      super.success('更新成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     else{
-      super.failure("更新失败");
+      super.failure(ctx.__('updateFailed'));
     }
   }
 
@@ -67,10 +67,10 @@ class ArtifactsController extends BaseController{
     const id = ctx.helper.parseInt(ctx.params.id);
     let result = await ctx.service.artifacts.del(id);
     if(result){
-      super.success('删除成功!');
+      super.success(ctx.__('deletedSuccessful'));
     }
     else{
-      super.failure('删除失败');
+      super.failure(ctx.__('deletedFailed'));
     }
   }
 
@@ -131,14 +131,14 @@ class ArtifactsController extends BaseController{
     if (idArray.length > 0){
         let result = await ctx.service.artifacts.transterInsertDataToES(idArray);
         if (result){
-            super.success("同步成功");
+            super.success(ctx.__('synchronousSuccess'));
         }
         else{
-            super.failure("同步失败");
+            super.failure(ctx.__('synchronousFailed'));
         }
     }
     else{
-        super.failure("没有数据需要同步");
+        super.failure(ctx.__('noDataNeedToSync'));
     }
 
   }
@@ -151,14 +151,14 @@ class ArtifactsController extends BaseController{
     if (idArray.length > 0){
         let result = await ctx.service.artifacts.transterUpdateDataToES(idArray);
         if (result){
-            super.success("同步成功");
+            super.success(ctx.__('synchronousSuccess'));
         }
         else{
-            super.failure("同步失败");
+            super.failure(ctx.__('synchronousFailed'));
         }
     }
     else{
-        super.failure("没有数据需要同步");
+        super.failure(ctx.__('noDataNeedToSync'));
     }
   }
 }

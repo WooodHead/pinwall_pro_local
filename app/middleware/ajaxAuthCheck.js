@@ -6,7 +6,7 @@ module.exports = () => {
       ctx.body = {
         success: true,
         status: 999,
-        data: '没有操作权限，请登录',
+        data: ctx__('noAuthAndLogin'),
       };
     }
 

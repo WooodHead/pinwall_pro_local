@@ -40,11 +40,11 @@ class UsersController extends BaseController{
     try{
       let data = ctx.request.body;
       if (data.captchaText != this.ctx.session.captcha){
-        super.failure('验证码错误!');
+        super.failure(ctx.__('verificationCodeError'));
       }
       else{
         const user = await ctx.service.users.createUser(data);
-        super.success(ctx.__('createSuccess'));
+        super.success(ctx.__('createdSuccess'));
       }
 
     }
@@ -63,7 +63,7 @@ class UsersController extends BaseController{
 
     try{
       await ctx.service.users.update({ id, updates });
-      super.success('更新成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -77,7 +77,7 @@ class UsersController extends BaseController{
 
     try{
       await ctx.service.users.del(id);
-      super.success('删除成功!');
+      super.success(ctx.__('deletedSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -91,7 +91,7 @@ class UsersController extends BaseController{
 
     try{
       await ctx.service.users.updateAcviveByUserId(userId);
-      super.success('更新成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -115,10 +115,10 @@ class UsersController extends BaseController{
   async checkCaptcha(){
     const captchaText = this.ctx.query.captchaText;
     if (captchaText == this.ctx.session.captcha){
-      super.success('校验成功!');
+      super.success(ctx.__('verificationSuccess'));
     }
     else{
-      super.failure('校验失败!');
+      super.success(ctx.__('verificationError'));
     }
   }
 
@@ -138,7 +138,7 @@ class UsersController extends BaseController{
       }
     }
     else{
-      super.failure('授权失败!');
+      super.failure(ctx.__('authError'));
     }
   }
 
@@ -177,10 +177,10 @@ class UsersController extends BaseController{
     const result = await ctx.service.users.bindWeixinInfoByMobile(mobile,smsCode,ctx.user);
     try{
       if (result){
-        super.success('绑定成功，请登录!');
+        super.success(ctx.__('bindSuccess'));
       }
       else{
-        super.failure('绑定失败!');
+        super.failure(ctx.__('bindFailed'));
       }
     }
     catch(e){
@@ -217,10 +217,10 @@ class UsersController extends BaseController{
         try{
           const result = await ctx.service.users.createUser(user);
           if (result){
-            super.success('注册成功!');
+            super.success(ctx.__('registerSuccess'));
           }
           else{
-            super.failure('创建失败!');
+            super.failure(ctx.__('registerFailed'));
           }
         }
         catch(e){
@@ -230,11 +230,11 @@ class UsersController extends BaseController{
 
       }
       else{
-        super.failure('微信扫描信息有误，请重新扫描!');
+        super.failure(ctx.__('weChatError'));
       }
     }
     else{
-      super.failure('验证码不正确!');
+      super.success(ctx.__('verificationCodeError'));
     }
   }
 
@@ -247,15 +247,15 @@ class UsersController extends BaseController{
       const app = this.ctx.helper;
       const crypwd = ctx.helper.cryptoPwd(ctx.helper.cryptoPwd(password));
       if(userObject.password != crypwd){
-        super.failure('旧密码不正确!');
+        super.failure(ctx.__('oldPwdError'));
       }
       else{
         const result = await ctx.service.users.updatePwd(ctx.user.Id, ctx.helper.cryptoPwd(ctx.helper.cryptoPwd(newPwd)));
         if (result){
-          super.success('修改成功');
+          super.success(ctx.__('updateSuccessful'));
         }
         else{
-          super.failure('修改失败');
+          super.failure(ctx.__('updateFailed'));
         }
       }
     }
@@ -271,7 +271,7 @@ class UsersController extends BaseController{
     const newPwd = ctx.request.body.newPwd;
     const result = await ctx.service.users.updatePwdWithMobileAndSmsCode(mobile, smsCode, newPwd);
     if (result.success){
-      super.success('修改成功');
+      super.success(ctx.__('updateSuccessful'));
     }
     else{
       super.failure(result.message);
@@ -284,10 +284,10 @@ class UsersController extends BaseController{
     const operation = ctx.request.body.operation;
     const result = await ctx.service.users.updateUserRole(userId,operation);
     if (result){
-      super.success('设置成功');
+      super.success(ctx.__('settingSuccessful'));
     }
     else{
-      super.failure('设置失败');
+      super.failure(ctx.__('settingFailed'));
     }
   }
 
@@ -307,7 +307,7 @@ class UsersController extends BaseController{
     }
     catch(e){
       ctx.logger.error(e.message);
-      super.failure('获取数据失败');
+      super.failure(ctx.__('getDataError'));
     }
   }
 
@@ -327,7 +327,7 @@ class UsersController extends BaseController{
     }
     catch(e){
       ctx.logger.error(e.message);
-      super.failure('获取数据失败');
+      super.failure(ctx.__('getDataError'));
     }
   }
 
@@ -346,7 +346,7 @@ class UsersController extends BaseController{
     }
     catch(e){
       ctx.logger.error(e.message);
-      super.failure('更新数据失败');
+      super.failure(ctx.__('updateDataError'));
     }
   }
 }

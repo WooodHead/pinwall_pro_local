@@ -56,7 +56,7 @@ class ArtifactCommentController extends BaseController{
     const ctx = this.ctx;
     const result = await ctx.service.artifactComment.create(ctx.request.body);
     if(result){
-      super.success('操作成功!');
+      super.success(ctx.__('successfulOperation'));
     }
     else{
       ctx.logger.error(e.message);
@@ -75,7 +75,7 @@ class ArtifactCommentController extends BaseController{
 
     try{
       await ctx.service.artifactComment.update({ id, updates });
-      super.success('更新成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -89,7 +89,7 @@ class ArtifactCommentController extends BaseController{
 
     try{
       await ctx.service.artifactComment.del(id);
-      super.success('删除成功!');
+      super.success(ctx.__('deletedSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -106,7 +106,7 @@ class ArtifactCommentController extends BaseController{
 
     try{
       await ctx.service.artifactComment.update(updates);
-      super.success('更新成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);

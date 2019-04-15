@@ -18,7 +18,7 @@ class ArtifactsController extends BaseController{
       const ctx = this.ctx;
       const result = await ctx.service.artifactComment.create(ctx.request.body);
       if(result){
-        super.success('操作成功!');
+        super.success(ctx.__('successfulOperation'));
       }
       else{
         super.failure(e.message);
@@ -31,10 +31,10 @@ class ArtifactsController extends BaseController{
         const wxUser = await ctx.service.users.find(ctx.request.body.userId);
         if (wxUser.roles[0].name == 'vip'){
           const article = await ctx.service.artifactScore.wxCreateScore(ctx.request.body,wxUser.Id);
-          super.success('打分成功!');
+          super.success(ctx.__('gradeSuccess'));
         }
         else{
-          super.failure('没有操作权限!');
+          super.failure(ctx.__('noAuth'));
         }
       }
       catch(e){
@@ -92,10 +92,10 @@ class ArtifactsController extends BaseController{
 
         const result = await ctx.service.artifactMedalLike.getMedalLikeDataByUserIdAndArtifactsId(artifactMedalLike);
         if(result){
-          super.success('已经点赞!');
+          super.success(ctx.__('hasLiked'));
         }
         else{
-          super.failure('未点赞!');
+          super.failure(ctx.__('notLiked'));
         }
     }
 
@@ -119,10 +119,10 @@ class ArtifactsController extends BaseController{
       const result = await ctx.service.artifactMedalLike.create(data);
 
       if(result){
-        super.success('操作成功!');
+        super.success(ctx.__('successfulOperation'));
       }
       else{
-        super.failure('操作失败!');
+        super.failure(ctx.__('failedOperation'));
       }
     }
 

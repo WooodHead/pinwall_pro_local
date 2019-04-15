@@ -27,21 +27,21 @@ class HomeController extends BaseController {
   async relogin(){
     const ctx = this.ctx;
     await ctx.render('login.html', {
-      message:'用户名密码错误，或者未激活!'
+      message:ctx.__('usernameOrPwdError')
     });
   }
 
   async activeFailure(){
     const ctx = this.ctx;
     await ctx.render('login.html', {
-      message:'激活失败!'
+      message:ctx.__('activeFailed')
     });
   }
 
   async wxRelogin(){
     const ctx = this.ctx;
     await ctx.render('login.html', {
-      message:'绑定成功，请先进入邮箱激活!!'
+      message:ctx.__('bindSuccessInEmail')
     });
   }
 
@@ -195,7 +195,7 @@ class HomeController extends BaseController {
   async wxCompleteInfo(){
     const ctx = this.ctx;
     await ctx.render('completeInfo.html',{
-      message:'未激活，请先进入邮箱激活，或者重发邮件激活',
+      message:ctx.__('notActiveByEmail'),
       tag:1
     });
   }

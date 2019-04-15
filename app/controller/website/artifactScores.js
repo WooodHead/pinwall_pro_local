@@ -38,7 +38,7 @@ class ArtifactScoresController extends BaseController{
     const ctx = this.ctx;
     try{
       const article = await ctx.service.artifactScore.create(ctx.request.body);
-      super.success('打分成功!');
+      super.success(ctx.__('gradeSuccess'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -55,7 +55,7 @@ class ArtifactScoresController extends BaseController{
 
     try{
       await ctx.service.artifactScore.update({ id, updates });
-      super.success('更新成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -69,7 +69,7 @@ class ArtifactScoresController extends BaseController{
 
     try{
       await ctx.service.artifactScore.del(id);
-      super.success('删除成功!');
+      super.success(ctx.__('deletedSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);

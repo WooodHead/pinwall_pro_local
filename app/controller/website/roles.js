@@ -38,7 +38,7 @@ class RolesController extends BaseController{
     const ctx = this.ctx;
     try{
       const role = await ctx.service.roles.create(ctx.request.body);
-      super.success('创建成功!');
+      super.success(ctx.__('createdSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -55,7 +55,7 @@ class RolesController extends BaseController{
 
     try{
       await ctx.service.roles.update({ id, updates });
-      super.success('更新成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);
@@ -69,7 +69,7 @@ class RolesController extends BaseController{
 
     try{
       await ctx.service.roles.del(id);
-      super.success('删除成功!');
+      super.success(ctx.__('deletedSuccessful'));
     }
     catch(e){
       ctx.logger.error(e.message);

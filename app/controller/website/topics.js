@@ -50,10 +50,10 @@ class TopicsController extends BaseController{
     const result = await ctx.service.topics.create(topic);
 
     if(result){
-      super.success('创建成功!');
+      super.success(ctx.__('createdSuccess'));
     }
     else{
-      super.failure('创建失败!');
+      super.failure(ctx.__('createdFailed'));
     }
   }
 
@@ -67,10 +67,10 @@ class TopicsController extends BaseController{
     };
      const result = await ctx.service.topics.update(updateData);
     if(result){
-      super.success('修改成功!');
+      super.success(ctx.__('updateSuccessful'));
     }
     else{
-      super.failure('修改失败！');
+      super.failure(ctx.__('updateFailed'));
     }
   }
 
@@ -79,10 +79,10 @@ class TopicsController extends BaseController{
     const id = ctx.helper.parseInt(ctx.params.id);
     const result = await ctx.service.topics.del(id);
     if(result){
-        super.success('删除成功!');
+        super.success(ctx.__('deletedSuccessful'));
     }
     else{
-        super.failure('删除失败！');
+        super.failure(ctx.__('deletedFailed'));
     }
 
   }
@@ -112,7 +112,7 @@ class TopicsController extends BaseController{
 
      try{
        await ctx.service.topics.updateTopicStatus(topicId,status);
-       super.success("操作成功!");
+       super.success(ctx.__('successfulOperation'));
      }
      catch(e){
        ctx.logger.error(e.message);

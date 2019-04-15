@@ -23,10 +23,10 @@ class ArtifactMedalLikeController extends BaseController{
     const result = await ctx.service.artifactMedalLike.create(data);
 
     if(result){
-      super.success('操作成功!');
+      super.success(ctx.__('successfulOperation'));
     }
     else{
-      super.failure('操作失败!');
+      super.failure(ctx.__('failedOperation'));
     }
   }
 
@@ -39,7 +39,7 @@ class ArtifactMedalLikeController extends BaseController{
       else if (ctx.user.roles[0].name == 'user'){
         tag = 2;
       }
-      
+
       let artifactMedalLike = {
           tag:tag,
           userId:ctx.user.Id,
@@ -48,10 +48,10 @@ class ArtifactMedalLikeController extends BaseController{
 
       const result = await ctx.service.artifactMedalLike.getMedalLikeDataByUserIdAndArtifactsId(artifactMedalLike);
       if(result){
-        super.success('已经点赞!');
+        super.success(ctx.__('hasLiked'));
       }
       else{
-        super.failure('未点赞!');
+        super.failure(ctx.__('notLiked'));
       }
   }
 }
