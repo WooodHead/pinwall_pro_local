@@ -17,13 +17,13 @@
 <div class="container" :style="containerStyle">
     <div class="recoverPwd_panel">
         <p class="title">{{__('ForgotPwd')}}</p>
-        <p style="color:#09bc72;width:60%;margin:20px 120px;text-align: left;">{{__('ForgotPwdTitle')}}</p>
+        <p class="des">{{__('ForgotPwdTitle')}}</p>
         <i-form :label-width="120">
             <form-item label="{{__('PhoneNumber')}}">
                 <i-input v-model="mobile" placeholder="{{__('EnterPhone')}}"></i-input>
             </form-item>
             <form-item label="{{__('code')}}">
-                <i-input type="text" v-model="smsCode" style="width:200px;margin-left: -355px;" @on-change="checkMobileCode" placeholder="{{__('Code')}}"></i-input>
+                <i-input class="code_input" type="text" v-model="smsCode" @on-change="checkMobileCode" placeholder="{{__('Code')}}"></i-input>
                 <i-button type="default" :disabled="disableCodeBtn" @click="sendAcodeStg" v-text="mobileCodeText"></i-button>
             </form-item>
             <form-item label="{{__('Password')}}" v-if="showUpdataData">

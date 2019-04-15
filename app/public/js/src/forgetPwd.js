@@ -8,15 +8,15 @@ var index = new Vue({
             drawerShow:false,
             disableCodeBtn:false,
             disabledBtn:true,
-            mobileCodeText:"点击获取验证码",
+            mobileCodeText:"",
             mobile:"",
             smsCode:"",
 
             // 新密码
             showUpdataData:false,//验证通过显示密码输入框
             password:"",
-            confirmPassword:""
-
+            confirmPassword:"",
+            locale:1,               //中英文 1：中文
         }
     },
     methods: {
@@ -43,12 +43,12 @@ var index = new Vue({
                     },
                     error:function(){
                 		that.$Loading.error();
-                    	that.$Notice.error({title:"网络异常，请稍后重试！", duration:3});
+                    	that.$Notice.error({title:that.locale ? "网络异常，请稍后重试！" : "Network error, please try again later!", duration:3});
                     }
                 })
     		}else if(this.mobile.length == 0){
         		that.$Loading.error();
-    			that.$Notice.error({title:"请输入手机号", duration:3});
+    			that.$Notice.error({title:that.locale ? "请输入手机号!" : "Please enter your mobile phone number!", duration:3});
     		}
     	},
         //验证手机验证码
@@ -66,18 +66,18 @@ var index = new Vue({
                         	that.$Notice.success({title:res.data, duration:3});
                             that.showUpdataData = true;
                         }else{
-                        	that.$Notice.error({title:"手机号码为空或者验证码失效!", duration:3});
+                        	that.$Notice.error({title: that.locale ? "手机号码为空或者验证码失效!" : "The cell phone number is empty or the verification code is invalid!", duration:3});
                         }
                     },
                     error:function(){
-                    	that.$Notice.error({title:"网络异常，请稍后重试！", duration:3});
+                    	that.$Notice.error({title: that.locale ? "网络异常，请稍后重试!" : "Network error, please try again later!", duration:3});
                     }
                 })
             }
     	},
         conPwdBlur(){
             if(this.password && this.confirmPassword != this.password){
-    			this.$Notice.error({ title: '输入的密码不一致', duration:3});
+    			this.$Notice.error({ title: this.locale ? '输入的密码不一致' : "The passwords entered are inconsistent", duration:3});
                 this.password = "";
                 this.confirmPassword = "";
     		}else if(this.password && this.confirmPassword == this.password){
@@ -115,6 +115,13 @@ var index = new Vue({
         }
     },
     created(){
+        if(document.cookie.split("=")[1] == "en-us"){
+            this.locale = 0;
+            this.mobileCodeText = "Click to get the verification code"
+        }else{
+            this.locale = 1;
+            this.mobileCodeText = "点击获取验证码"
+        }
         this.containerStyle.margin = (document.documentElement.clientHeight - 400 ) / 2 - 90 + "px auto";
     }
 })
@@ -122,10 +129,10 @@ function clock(that){
 	var num = 60;
 	var int = setInterval(function(){
 		num > 0 ? num-- : clearInterval(int);
-		that.mobileCodeText = num + "秒后重试";
+		that.mobileCodeText = num + that.locale ? "秒后重试" : "seconds later do again";
 		that.disableCodeBtn = true;
 		if(num == 0){
-			that.mobileCodeText = "点击获取验证码";
+			that.mobileCodeText = that.locale ? "点击获取验证码" : "Click to get the verification code";
     		that.disableCodeBtn = false;
 		}
 	},1000);

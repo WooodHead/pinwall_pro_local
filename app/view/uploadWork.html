@@ -15,7 +15,7 @@
 
 {% block container %}
 	<div class="container" :style="containerStyle">
-		<h4 class="upload_title" v-text="'上传/修改' + '{{user.fullname}}' + '的' + jobTagName"></h4>
+		<h4 class="upload_title" v-text="'{{__('Upload/modify')}}' + '{{user.fullname}}' + jobTagName"></h4>
 		<nav class="step_nav">
 			<ul class="step_nav_ul">
 				<li class="step_nav_li" :class="{active:stepOneActive}" @click="goStep1">1.{{__('AddBasicInfo')}}&nbsp;&nbsp;&nbsp;&nbsp;></li>

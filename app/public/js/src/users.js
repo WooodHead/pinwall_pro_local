@@ -18,6 +18,7 @@ var index = new Vue({
     },
     created(){
         let that = this;
+        let locale = document.cookie.split("=")[1];
 
         let urlId = window.location.href.split("users/")[1].split("?")[0];
         if ( urlId == 0 ) {     //用户自己登录
@@ -41,7 +42,11 @@ var index = new Vue({
                     that.total = res.data.count;
                     if (res.data.count > 0){
                         that.userInfo = res.data.rows[0].user;
-                        that.userInfo.createAt = that.userInfo.createAt.split("T")[0] + " 注册";
+                        if(locale == "en-us"){
+                            that.userInfo.createAt = that.userInfo.createAt.split("T")[0] + " 注册";
+                        }else{
+                            that.userInfo.createAt = that.userInfo.createAt.split("T")[0] + " sign in";
+                        }
                         that.dataList = res.data.rows;
                         that.headDataList = res.data.rows;
                         if (that.dataList.length == res.data.count) {
@@ -50,10 +55,15 @@ var index = new Vue({
                             that.scrollModel = true;
                         }
                     }else{
-                        that.userInfo.fullname = "此用户";
+                        if(locale == "en-us"){
+                            that.userInfo.fullname = "This user";
+                            that.$Notice.error({title:"User no portfolio!"})
+                        }else{
+                            that.userInfo.fullname = "此用户";
+                            that.$Notice.error({title:"用户暂无作品集！"})
+                        }
                         that.userInfo.avatarUrl = "";
                         that.userInfo.medalCount = 0;
-                        that.$Notice.error({title:"用户暂无作品集！"})
                     }
                 }else{
                     that.$Loading.error();

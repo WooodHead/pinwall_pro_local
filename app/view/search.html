@@ -54,7 +54,7 @@
 		</ul>
 	</div>
 	<!-- 搜索弹出层 -->
-	<modal v-model="searchModel" title="探索" footer-hide :width="modelWidth">
+	<modal v-model="searchModel" title="{{__('Search')}}" footer-hide :width="modelWidth">
 	   <div class="search_panel">
 			<div class="search_input_result">
 				<i-input v-model="searchModelValue" @on-enter="searchModelData" @on-change="searchDataChange" placeholder="{{__('WorksKey')}}" style="width:80%;margin-left:10%;margin-top:30px;" clearable autofocus></i-input>

@@ -2,6 +2,7 @@ var container = new Vue({
     el: '.index',
     data(){
         return{
+            locale:1,                      //当前浏览器语言
             containerStyle:{
                 minHeight:"",
             },
@@ -52,7 +53,7 @@ var container = new Vue({
             let file = files.target.files[0];
             let fileSize = files.target.files[0].size/1048576;
             if (fileSize <= 2) {
-                this.$Notice.success({title:'上传中···'});
+                this.$Notice.success({title:this.locale ? '上传中···' : "uploading..."});
                 let formdata = new FormData();
                 formdata.append('head', file);
                 $.ajax({
@@ -68,28 +69,28 @@ var container = new Vue({
                             img.src = res.url;
                             img.onload = function(){
                                 if(img.width == img.height && img.width >= 600 && img.width <= 800){
-                                    that.$Notice.success({title:'上传成功！'});
+                                    that.$Notice.success({title:that.locale ? '上传成功！' : 'Successful operation!'});
                                     that.step1_upload_fengmian_src = res.url;
                                     that.dataItem.profileImage = res.fileName;
                                 }else{
-                                    that.$Notice.error({title:"图片不符合尺寸要求！，请重新上传……"});
+                                    that.$Notice.error({title:that.locale ? "图片不符合尺寸要求！，请重新上传……" : "The picture does not meet the size requirement!Please upload again..."});
                                 }
                             }
                         }else if(res.status == 500){
-                            that.$Notice.error({title:"上传出错"});
+                            that.$Notice.error({title: that.locale ? "上传出错" : "Operation failed!"});
                         }else if(res.status == 999){
                             that.$Notice.error({title:res.data.message});
                         }
                     }
                 })
             }else{
-                this.$Notice.error({title:"图片大小不符，请重新选择"});
+                this.$Notice.error({title:this.locale ? "图片大小不符，请重新选择" : "The picture size does not match, please choose again!"});
             }
         },
         step2_upload_neirong_change(files){
             let that = this;
             let file = files.target.files[0];
-            this.$Notice.success({title:'上传中···'});
+            this.$Notice.success({title:this.locale ? '上传中···' : "uploading..."});
 
             let formdata = new FormData();
             formdata.append('head', file);
@@ -102,7 +103,7 @@ var container = new Vue({
                 data: formdata,
                 success(res){
                     if(res.status == 200){
-                        that.$Notice.success({title:'上传成功！'});
+                        that.$Notice.success({title:that.locale ? '上传成功！' : 'Successful operation!'});
                         that.step2_upload_neirong_src = that.step2_upload_neirong_src.concat(res.url);
 
                         let subarr = new Object();
@@ -132,7 +133,7 @@ var container = new Vue({
                         that.file_otherinof_arr.push(progress_subarr);
                         that.neirong_truename_arr.push(files.target.files[0].name);
                     }else if(res.status == 500){
-                        that.$Notice.error({title:"上传出错"});
+                        that.$Notice.error({title: that.locale ? "上传出错" : "Operation failed!"});
                     }else if(res.status == 999){
                         that.$Notice.error({title:res.data.message});
                     }
@@ -146,7 +147,7 @@ var container = new Vue({
         step2_upload_change(files){
             let that = this;
             let file = files.target.files[0];
-            this.$Notice.success({title:'上传中···'});
+            this.$Notice.success({title:this.locale ? '上传中···' : "uploading..."});
 
             let formdata = new FormData();
             formdata.append('head', file);
@@ -159,13 +160,14 @@ var container = new Vue({
                 data: formdata,
                 success(res){
                     if(res.status == 200){
+                        that.$Notice.success({title:that.locale ? '上传成功！' : 'Successful operation!'});
                         that.step2_upload_neirong_src.splice(that.which_artifact_assets,1,res.url);
                         that.step2_between_arr[that.which_artifact_assets].imagename = files.target.files[0].name;
                         that.step2_between_arr[that.which_artifact_assets].viewImgUrl = res.url;
                         that.step2_between_arr[that.which_artifact_assets].profileImage = res.fileName;
                         that.neirong_truename_arr[that.which_artifact_assets] = files.target.files[0].name;
                     }else if(res.status == 500){
-                        that.$Notice.error({title:"上传出错"});
+                        that.$Notice.error({title: that.locale ? "上传出错" : "Operation failed!"});
                     }else if(res.status == 999){
                         that.$Notice.error({title:res.data.message});
                     }
@@ -177,7 +179,7 @@ var container = new Vue({
             let file = files.target.files[0];
             let fileTrueName = files.target.files[0].name;
             this.file_otherinof_arr[this.which_artifact_assets].fileTrueName = files.target.files[0].name;
-            this.$Notice.success({title:'上传中···'});
+            this.$Notice.success({title:this.locale ? '上传中···' : "uploading..."});
 
             let formdata = new FormData();
             formdata.append('head', file);
@@ -200,13 +202,14 @@ var container = new Vue({
                 },
                 success(res){
                     if(res.status == 200){
+                        that.$Notice.success({title:that.locale ? '上传成功！' : 'Successful operation!'});
                         that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
                         that.step2_between_arr[that.which_artifact_assets].type = 4;
                         that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
                         that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
                         that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
                     }else if(res.status == 500){
-                        that.$Notice.error({title:"上传出错"});
+                        that.$Notice.error({title: that.locale ? "上传出错" : "Operation failed!"});
                     }else if(res.status == 999){
                         that.$Notice.error({title:res.data.message});
                     }
@@ -219,7 +222,7 @@ var container = new Vue({
             let fileTrueName = files.target.files[0].name;
             this.file_otherinof_arr[this.which_artifact_assets].fileTrueName = files.target.files[0].name;
 
-            this.$Notice.success({title:'上传中···'});
+            this.$Notice.success({title:this.locale ? '上传中···' : "uploading..."});
 
             let formdata = new FormData();
             formdata.append('head', file);
@@ -242,13 +245,14 @@ var container = new Vue({
                 },
                 success(res){
                     if(res.status == 200){
+                        that.$Notice.success({title:that.locale ? '上传成功！' : 'Successful operation!'});
                         that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
                         that.step2_between_arr[that.which_artifact_assets].type = 2;
                         that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
                         that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
                         that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
                     }else if(res.status == 500){
-                        that.$Notice.error({title:"上传出错"});
+                        that.$Notice.error({title: that.locale ? "上传出错" : "Operation failed!"});
                     }else if(res.status == 999){
                         that.$Notice.error({title:res.data.message});
                     }
@@ -261,7 +265,7 @@ var container = new Vue({
             let fileTrueName = files.target.files[0].name;
             this.file_otherinof_arr[this.which_artifact_assets].fileTrueName = files.target.files[0].name;
 
-            this.$Notice.success({title:'上传中···'});
+            this.$Notice.success({title:this.locale ? '上传中···' : "uploading..."});
 
             let formdata = new FormData();
             formdata.append('head', file);
@@ -283,17 +287,18 @@ var container = new Vue({
                     return xhr;
                 },
                 success(res){
-                    if(res.status == 200){    
+                    if(res.status == 200){
+                        that.$Notice.success({title:that.locale ? '上传成功！' : 'Successful operation!'});
                         that.step2_between_arr[that.which_artifact_assets].position = that.which_artifact_assets;
                         that.step2_between_arr[that.which_artifact_assets].type = 3;
                         that.step2_between_arr[that.which_artifact_assets].mediaFile = res.fileName;
                         that.step2_between_arr[that.which_artifact_assets].viewUrl = res.fileName;
                         that.step2_between_arr[that.which_artifact_assets].filename = files.target.files[0].name;
                     }else if(res.status == 500){
-                        that.$Notice.error({title:"上传出错"});
+                        that.$Notice.error({title: that.locale ? "上传出错" : "Operation failed!"});
                     }else if(res.status == 999){
                         that.$Notice.error({title:res.data.message});
-                    }    
+                    }
                 }
             })
         },
@@ -307,7 +312,7 @@ var container = new Vue({
                     if (this.terms_arr[i].name == this.terms_value) {
                         XO = false;
                         this.terms_value = "";
-                        this.$Notice.error({title:"该标签已添加!"});
+                        this.$Notice.error({title: this.locale ? "该标签已添加" : "The label has been added!"});
                     }
                 }
                 if(this.terms_value && XO){
@@ -323,7 +328,7 @@ var container = new Vue({
                 for(let i=0;i<this.terms_arr.length;i++){
                     if (this.terms_arr[i].name == this.terms_value) {
                         XO = false;
-                        this.$Notice.error({title:"该标签已添加!"});
+                        this.$Notice.error({title: this.locale ? "该标签已添加" : "The label has been added!"});
                     }
                 }
                 if(this.terms_value && XO){
@@ -394,7 +399,7 @@ var container = new Vue({
                 this.stepThreeActive = false;
                 this.dataItem.terms = this.terms_arr;
             }else{
-                this.$Notice.error({title:"请输入必填信息！"})
+                this.$Notice.error({title: this.locale ? "请输入必填信息！" : "Please enter required information!"});
             }
 
         },
@@ -405,7 +410,7 @@ var container = new Vue({
                 this.stepThreeActive = true;
                 this.dataItem.artifact_assets = this.step2_between_arr;
             }else{
-                this.$Notice.error({title:"请输入必填信息！"})
+                this.$Notice.error({title: this.locale ? "请输入必填信息！" : "Please enter required information!"});
             }
         },
         submitData(){
@@ -420,7 +425,7 @@ var container = new Vue({
                         that.$Loading.finish();
                         if (res.status == 200) {
                             that.$Notice.success({
-                                title:"上传作品成功，2秒后返回!",
+                                title:that.locale ? "上传作品成功，2秒后返回!" : "Successful upload, return 2 seconds later!",
                                 duration:2,
                                 onClose(){
                                     window.location.href="/project/" + that.dataItem.Id;
@@ -440,7 +445,7 @@ var container = new Vue({
                         that.$Loading.finish();
                         if (res.status == 200) {
                             that.$Notice.success({
-                                title:"上传作品成功，2秒后返回!",
+                                title:that.locale ? "上传作品成功，2秒后返回!" : "Successful upload, return 2 seconds later!",
                                 duration:2,
                                 onClose(){
                                     window.location.href = "/uploadWork/2";
@@ -456,15 +461,20 @@ var container = new Vue({
     },
     created(){
         let that = this;
+        if(document.cookie.split("=")[1] == "en-us"){
+            this.locale = 0;
+        }else{
+            this.locale = 1;
+        }
         this.containerStyle.minHeight = document.documentElement.clientHeight - 140 + "px";
 
         if(window.location.href.indexOf("editUploadWork") > 0){
             this.dataItem.Id = window.location.search.split("?id=")[1].split("&jobTag=")[0];
             this.dataItem.jobTag = window.location.search.split("?id=")[1].split("&jobTag=")[1];
             if(this.dataItem.jobTag == 1){
-                this.jobTagName = "作业";
+                this.jobTagName = this.locale ? "的作业" : "'s works";
             }else{
-                this.jobTagName = "作品集";
+                this.jobTagName = this.locale ? "的作品集" : "'s sample reels";
             }
             $.ajax({
                 url: config.ajaxUrls.getArtifactsWithId.replace(":id",this.dataItem.Id),
@@ -513,17 +523,17 @@ var container = new Vue({
             this.dataItem.jobTag = window.location.href.split("uploadWork/")[1].split("?")[0];
             this.dataItem.topicId = window.location.href.split("topicId=")[1];
             if(this.dataItem.jobTag == 1){
-                this.jobTagName = "作业";
+                this.jobTagName = this.locale ? "的作业" : "'s works";
             }else{
-                this.jobTagName = "作品集";
+                this.jobTagName = this.locale ? "的作品集" : "'s sample reels";
             }
         }else{
             this.dataItem.jobTag = window.location.href.split("uploadWork/")[1].split("?")[0];
             this.dataItem.topicId = 0;
             if(this.dataItem.jobTag == 1){
-                this.jobTagName = "作业";
+                this.jobTagName = this.locale ? "的作业" : "'s works";
             }else{
-                this.jobTagName = "作品集";
+                this.jobTagName = this.locale ? "的作品集" : "'s sample reels";
             }
         }
     }

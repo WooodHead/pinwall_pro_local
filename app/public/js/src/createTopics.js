@@ -16,7 +16,8 @@ var index = new Vue({
                 description:"",
                 status:0,
                 jobTag:1,
-            }
+            },
+            locale:1    //中英文 1：中文
         }
     },
     methods: {
@@ -25,7 +26,7 @@ var index = new Vue({
             for(let i=0;i<this.terms_arr.length;i++){
                 if (this.terms_arr[i].name == this.terms_value) {
                     XO = false;
-                    this.$Notice.error({title:"该标签已添加!"});
+                    this.$Notice.error({title:this.locale ? "该标签已添加!" : "The label has been added!"});
                 }
             }
             if(this.terms_value && XO){
@@ -50,7 +51,7 @@ var index = new Vue({
                     if (res.status == 200) {
                         that.$Loading.finish();
                         that.$Notice.success({
-                            title:"作业荚创建成功，2秒后返回",
+                            title:that.locale ? "作业荚创建成功，2秒后返回" : "Successful, return 2 seconds later",
                             duration:2,
                             onClose:function(){
                                 if (that.formItem.jobTag == 1) {
@@ -69,6 +70,11 @@ var index = new Vue({
         }
     },
     created(){
+        if(document.cookie.split("=")[1] == "en-us"){
+            this.locale = 0;
+        }else{
+            this.locale = 1;
+        }
         this.containerStyle.minHeight = document.documentElement.clientHeight - 150 + "px";
         let topicJobtog = window.location.href.split("?jobTag=")[1];
         if (topicJobtog == 2) {
