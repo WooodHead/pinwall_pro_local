@@ -8,23 +8,23 @@
 {% endblock %}
 
 {% block head_btn %}
-<a class="index" href="/">首页</a>
-<a class="topicsAbout" href="/graduationProjects">毕设展</a>
-<a class="topics" href="/courseProjects">作业荚</a>
+<a class="index" href="/">{{__('Home')}}</a>
+<a class="topicsAbout" href="/graduationProjects">{{__('GraduateCourse')}}</a>
+<a class="topics" href="/courseProjects">{{__('Course')}}</a>
 {% endblock %}
 
 {% block container %}
 	<div class="container" :style="containerStyle">
 		<div class="container_header">
 			<div class="title" style="height: 35px;line-height: 35px;text-align: right;width: 170px;">
-				作业荚:
+				{{__('Course')}}:
 			</div>
-			<i-button :type="checkAllType" @click="checkAll">全部</i-button>
-			<i-button :type="checkOpenType" @click="checkOpen">开放中</i-button>
-			<i-button :type="checkCloseType" @click="checkClose">已关闭</i-button>
-			<i-button :type="checkMyType" @click="checkMy" v-if="'{{user.Id}}'">由我创建</i-button>
+			<i-button :type="checkAllType" @click="checkAll">{{__('All')}}</i-button>
+			<i-button :type="checkOpenType" @click="checkOpen">{{__('Open')}}</i-button>
+			<i-button :type="checkCloseType" @click="checkClose">{{__('Closed')}}</i-button>
+			<i-button :type="checkMyType" @click="checkMy" v-if="'{{user.Id}}'">{{__('MyCreate')}}</i-button>
 			<div class="">
-				<i-input v-model="searchValue" prefix="ios-search" @on-enter="searchTopics" placeholder="请输入作业荚关键词"/>
+				<i-input v-model="searchValue" prefix="ios-search" @on-enter="searchTopics" placeholder="{{__('EnterKeyword')}}"/>
 			</div>
 		</div>
 		<div class="container_content">
@@ -66,20 +66,20 @@
 					<i-col :xs="0" :sm="1" :md="1" :lg="1">
 						<ul :class="{topic_action:!item.status, topic_closed:item.status}">
 							<li class="de_topic_action_view" v-if="item.status == 1" style="margin-top:5px;">
-								<i-button type="checkCloseType" size="large" shape="circle" icon="md-eye" @click="checkThisTopic(item.Id)" title="查看"></i-button>
+								<i-button type="checkCloseType" size="large" shape="circle" icon="md-eye" @click="checkThisTopic(item.Id)" title="{{__('Look')}}"></i-button>
 							</li>
 							<li class="de_topic_action_view" v-if="item.status == 0" style="margin-top:5px;">
-								<i-button type="checkCloseType" size="large" shape="circle" icon="md-cloud-upload" @click="uploadToTopic(item.Id)" title="上传"></i-button>
+								<i-button type="checkCloseType" size="large" shape="circle" icon="md-cloud-upload" @click="uploadToTopic(item.Id)" title="{{__('Upload')}}"></i-button>
 							</li>
 							{% if user.roles[0].name != 'user' %}
 							<li class="de_topic_action_view" v-if="item.status == 1 && ('{{user.Id}}' == item.userId || '{{user.roles[0].name}}' == 'admin')" style="margin-top:5px;">
-								<i-button type="checkCloseType" size="large" shape="circle" icon="md-lock" @click="cockThisTopic(item.Id, item.status)" title="锁定"></i-button>
+								<i-button type="checkCloseType" size="large" shape="circle" icon="md-lock" @click="cockThisTopic(item.Id, item.status)" title="{{__('Lock')}}"></i-button>
 							</li>
 							<li class="de_topic_action_view" v-if="item.status == 0 && ('{{user.Id}}' == item.userId || '{{user.roles[0].name}}' == 'admin')" style="margin-top:5px;">
-								<i-button type="checkCloseType" size="large" shape="circle" icon="md-unlock" @click="cockThisTopic(item.Id, item.status)" title="解锁"></i-button>
+								<i-button type="checkCloseType" size="large" shape="circle" icon="md-unlock" @click="cockThisTopic(item.Id, item.status)" title="{{__('Ublock')}}"></i-button>
 							</li>
 							<li class="de_topic_action_view" v-if=" '{{user.roles[0].name}}' == 'admin' || '{{user.Id}}' == item.userId " style="margin-top:5px;">
-								<i-button type="checkCloseType" size="large" shape="circle" icon="ios-cog" @click="settingThisTopic(item.Id)" title="设置"></i-button>
+								<i-button type="checkCloseType" size="large" shape="circle" icon="ios-cog" @click="settingThisTopic(item.Id)" title="{{__('Setting')}}"></i-button>
 							</li>
 							{% endif %}
 						</ul>
