@@ -115,10 +115,10 @@ class UsersController extends BaseController{
   async checkCaptcha(){
     const captchaText = this.ctx.query.captchaText;
     if (captchaText == this.ctx.session.captcha){
-      super.success(ctx.__('verificationSuccess'));
+      super.success(this.ctx.__('verificationSuccess'));
     }
     else{
-      super.success(ctx.__('verificationError'));
+      super.success(this.ctx.__('verificationError'));
     }
   }
 
@@ -138,7 +138,7 @@ class UsersController extends BaseController{
       }
     }
     else{
-      super.failure(ctx.__('authError'));
+      super.failure(this.ctx.__('authError'));
     }
   }
 
