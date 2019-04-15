@@ -8,19 +8,19 @@
 {% endblock %}
 
 {% block head_btn %}
-<a class="index" href="/">首页</a>
-<a class="topicsAbout" href="/graduationProjects">毕设展</a>
-<a class="topics" href="/courseProjects">作业荚</a>
+<a class="index" href="/">{{__('Home')}}</a>
+<a class="topicsAbout" href="/graduationProjects">{{__('GraduateCourse')}}</a>
+<a class="topics" href="/courseProjects">{{__('Course')}}</a>
 {% endblock %}
 
 {% block container %}
 	<div class="container" :style="containerStyle">
-		<h4 class="upload_title" v-text="'上传/修改' + '{{user.fullname}}' + '的' + jobTagName"></h4>
+		<h4 class="upload_title" v-text="{{__('Upload/modify')}} + '{{user.fullname}}' +  jobTagName"></h4>
 		<nav class="step_nav">
 			<ul class="step_nav_ul">
-				<li class="step_nav_li" :class="{active:stepOneActive}" @click="goStep1">1.添加基本信息&nbsp;&nbsp;&nbsp;&nbsp;></li>
-				<li class="step_nav_li" :class="{active:stepTwoActive}" @click="goStep2">2.上传&nbsp;&nbsp;&nbsp;&nbsp;></li>
-				<li class="step_nav_li" :class="{active:stepThreeActive}" @click="goStep3">3.预览并提交</li>
+				<li class="step_nav_li" :class="{active:stepOneActive}" @click="goStep1">1.{{__('AddBasicInfo')}}&nbsp;&nbsp;&nbsp;&nbsp;></li>
+				<li class="step_nav_li" :class="{active:stepTwoActive}" @click="goStep2">2.{{__('Upload')}}&nbsp;&nbsp;&nbsp;&nbsp;></li>
+				<li class="step_nav_li" :class="{active:stepThreeActive}" @click="goStep3">3.{{__('PreviewSubmit')}}</li>
 			</ul>
 		</nav>
 		<div class="upload_form">
@@ -29,28 +29,28 @@
 				<div class="step1" v-show="stepOneActive">
 					<row>
 						<i-col span="10" push="1">
-							<form-item label="标题" prop="name">
-								<i-input v-model="dataItem.name" placeholder="请输入标题" clearable></i-input>
+							<form-item label="{{__('Title')}}" prop="name">
+								<i-input v-model="dataItem.name" placeholder="{{__('EnterTitle')}}" clearable></i-input>
 							</form-item>
-							<form-item label="标签" id="label_formitem">
+							<form-item label="{{__('Label')}}" id="label_formitem">
 								<i-button type="success" size="small" icon="ios-brush" @click="deleteLabel(index)" v-for="(item,index) in terms_arr" style="margin-right:5px;"><span v-text="item.name"></span></i-button>
 							</form-item>
-							<form-item label="添加标签">
-								<i-input class="terms_input" placeholder="输入并按回车确认" @on-blur="createTerm" @on-enter="createTerm" v-model="terms_value" clearable></i-input>
+							<form-item label="{{__('AddLabels')}}">
+								<i-input class="terms_input" placeholder="{{__('EnterLabel')}}" @on-blur="createTerm" @on-enter="createTerm" v-model="terms_value" clearable></i-input>
 							</form-item>
-							<form-item label="内容说明" prop="description">
-								<i-input v-model="dataItem.description" type="textarea" placeholder="请输入作品内容说明"></i-input>
+							<form-item label="{{__('Description')}}" prop="description">
+								<i-input v-model="dataItem.description" type="textarea" placeholder="{{__('EnterDescription')}}"></i-input>
 							</form-item>
 						</i-col>
 						<i-col span="10" push="2">
 							<form-item>
 								<div class="step1_upload">
-									<i-button type="success" id="step1_upload_fengmian">上传作品封面</i-button>
+									<i-button type="success" id="step1_upload_fengmian">{{__('UploadCover')}}</i-button>
 									<input type="file" @change="step1_upload_fengmian_change" id="step1_upload_fengmian_input" accept="image/*" style="display:none;"/>
 								</div>
-								<p>请上传一张正方形、宽度500~800px的jpg或png图像作为作品封面。</p>
+								<p>{{__('CoverImgRules')}}</p>
 							</form-item>
-							<form-item label="封面预览" prop="profileImage">
+							<form-item label="{{__('CoverPreview')}}" prop="profileImage">
 								<img class="project_thumb" :src="step1_upload_fengmian_src ? step1_upload_fengmian_src : '../public/images/default_thumb_500.png'">
 							</form-item>
 						</i-col>
@@ -59,7 +59,7 @@
 					<row>
 						<i-col span="6">
 							<div class="step2_upload">
-								<i-button icon="md-add-circle" type="success" id="step2_upload_btn" long>上传图片</i-button>
+								<i-button icon="md-add-circle" type="success" id="step2_upload_btn" long>{{__('UploadPicture')}}</i-button>
 								<input type="file" @change="step2_upload_neirong_change" id="step2_upload_input" accept="image/*" style="display:none;"/>
 							</div>
 							<ul class="uploaded_list" id="uploaded_list">
@@ -74,38 +74,38 @@
 							<p style="width:100%;height:35px;background:white;line-height: 35px;color: #666;text-align: center;border: 1px solid #CECFCF;" v-text="neirong_truename_arr[which_artifact_assets]"></p>
 							<div style="display:flex;flex-direction:row;" v-show="upload_show">
 								<div class="content" v-show="step2_upload_neirong_src.length">
-									<p class="label">图片预览</p>
-									<p class="tooltips">限2M以内的jpg或png</p><br>
+									<p class="label">{{__('PreviewPicture')}}</p>
+									<p class="tooltips">{{__('PictureSize')}}</p><br>
 									<div class="step3_upload">
-										<i-button type="default" class="step2_change_upload_btn" long>更换</i-button>
+										<i-button type="default" class="step2_change_upload_btn" long>{{__('Replace')}}</i-button>
 										<input type="file" @change="step2_upload_change" class="step2_change_upload_input" accept="aplication/zip" style="display:none;"/>
 									</div><br>
 									<img class="thumb" style="width:200px;height:auto;margin: 0 auto;" :src="step2_upload_neirong_src[which_artifact_assets]">
 								</div>
 								<div class="other_info" id="other_info" v-show="step2_upload_neirong_src.length">
 									<div style="display: flex;flex-direction: row;justify-content: space-between;">
-										<p>绑定媒体文件 <span style="color: #3399cc;">(可选)</span></p>
+										<p>{{__('BindMedia')}} <span style="color: #3399cc;">{{__('Optional')}}</span></p>
 										<dropdown >
 											<a href="javascript:void(0)">
-												添加文件
+												{{__('AddFiles')}}
 												<icon type="ios-arrow-down"></icon>
 											</a>
 											<dropdown-menu slot="list">
 												<dropdown-item>
 													<div class="step2_upload">
-														<i-button icon="ios-play" id="step2_upload_MP4_btn">视频文件(MP4)</i-button>
+														<i-button icon="ios-play" id="step2_upload_MP4_btn">{{__('MP4')}}</i-button>
 														<input type="file" @change="step2_upload_MP4_change" id="step2_upload_MP4_input" accept="audio/mp4,video/mp4" style="display:none;"/>
 													</div>
 												</dropdown-item>
 												<dropdown-item>
 													<div class="step2_upload">
-														<i-button icon="ios-book" id="step2_upload_PDF_btn">文档(PDF)</i-button>
+														<i-button icon="ios-book" id="step2_upload_PDF_btn">{{__('PDF')}}</i-button>
 														<input type="file" @change="step2_upload_PDF_change" id="step2_upload_PDF_btninput" accept="application/pdf" style="display:none;"/>
 													</div>
 												</dropdown-item>
 												<dropdown-item>
 													<div class="step2_upload">
-														<i-button icon="ios-folder" id="step2_upload_ZIP_btn">压缩包(ZIP)</i-button>
+														<i-button icon="ios-folder" id="step2_upload_ZIP_btn">{{__('ZIP')}}</i-button>
 														<input type="file" @change="step2_upload_ZIP_change" id="step2_upload_ZIP_input" accept="application/x-zip-compressed" style="display:none;"/>
 													</div>
 												</dropdown-item>
@@ -114,11 +114,11 @@
 									</div>
 									<div  v-for="(item,index) in step2_between_arr" v-if="which_artifact_assets === index">
 										<div><i-progress :percent="file_otherinof_arr[index].progress ? file_otherinof_arr[index].progress: 0" /><br></div>
-										<p v-text="'文件名:' + file_otherinof_arr[index].fileTrueName"></p><br><br>
-										<p>标题 <span style="color: #3399cc;">(可选)</span></p>
-										<i-input placeholder="请输入标题(100个字符以内)" v-model="step2_between_arr[index].name" maxlength='100' clearable></i-input><br><br>
-										<p>描述 <span style="color: #3399cc;">(可选)</span></p>
-										<i-input type="textarea" placeholder="请输入相应描述" v-model="step2_between_arr[index].description"></i-input><br>
+										<p v-text="{{__('FileName')}}: + file_otherinof_arr[index].fileTrueName"></p><br><br>
+										<p>{{__('Title')}} <span style="color: #3399cc;">{{__('Optional')}}</span></p>
+										<i-input placeholder="{{__('EnterWorkTitle')}}" v-model="step2_between_arr[index].name" maxlength='100' clearable></i-input><br><br>
+										<p>{{__('Describe')}} <span style="color: #3399cc;">{{__('Optional')}}</span></p>
+										<i-input type="textarea" placeholder="{{__('EnterDescription')}}" v-model="step2_between_arr[index].description"></i-input><br>
 									</div>
 								</div>
 							</div>
@@ -130,7 +130,7 @@
 						<a @click="submitData">
 							<img src="../public/images/flag_green.png">
 							<icon type="ios-thumbs-up" style="font-size: 40px; position: absolute;top: 15px;left: 20px;"></icon>
-							<span>提交</span>
+							<span>{{__('Submit')}}</span>
 						</a>
 					</div>
 					<div class="user_info">

@@ -15,13 +15,13 @@
 					<a @click="zan('{{data.userId}}','{{user.roles[0].name}}')">
 						<img :src="artifactZanTag ? '../public/images/flag_green.png' : '../public/images/flag_gray.png'" alt="">
 						<icon type="ios-thumbs-up" style="font-size: 40px; position: absolute;top: 15px;left: 20px;"></icon>
-						<span>赞</span>
+						<span>{{__('Like')}}</span>
 					</a>
 				{% else %}
 					<a @click="zan('{{data.userId}}','{{user.roles[0].name}}')">
 						<img src="../public/images/flag_gray.png" alt="">
 						<icon type="ios-thumbs-up" style="font-size: 40px; position: absolute;top: 15px;left: 20px;"></icon>
-						<span>赞</span>
+						<span>{{__('Like')}}</span>
 					</a>
 				{% endif %}
 			</div>
@@ -54,9 +54,9 @@
 			<back-top></back-top>
             <div class="project_detail">
 				<div class="score_box" v-if="'{{user.roles[0].name}}' == 'vip' && '{{data.topics[0].userId}}' == '{{user.Id}}' && {{data.topics.length}} != 0">
-					<label>作品分数：</label>
-					<i-input type="text" value="{{data.artifact_scores[0].score}}" @on-change="scoreChange(event,{{data.Id}})" placeholder="0~100之间的整数" size="large" number autofocus></i-input>
-					<i-button type="success" @click="submitScore">打分</i-button>
+					<label>{{__('WorksScore')}}:</label>
+					<i-input type="text" value="{{data.artifact_scores[0].score}}" @on-change="scoreChange(event,{{data.Id}})" placeholder="{{__('ScoreTitle')}}" size="large" number autofocus></i-input>
+					<i-button type="success" @click="submitScore">{{__('score')}}</i-button>
 				</div>
                 <div class="stats_tags">
                     <div class="badges">
@@ -84,7 +84,7 @@
                 </div>
                 <h2>{{data.name}}</h2>
                 <p class="publishtime">
-                    {{data.createAt.getFullYear()}}-{{data.createAt.getMonth() + 1}}-{{data.createAt.getDate()}}，收录于
+                    {{data.createAt.getFullYear()}}-{{data.createAt.getMonth() + 1}}-{{data.createAt.getDate()}}，{{__('IncludedIn')}}
 						{% for item in data.topics %}
 	                    	<a href="/workFolder/{{data.topics[0].Id}}">{{item.name}}</a>
 						{% endfor %}
@@ -160,24 +160,24 @@
 						<a href="/users/{{user.Id}}" class="name">{{user.fullname}}</a>
 						<i-form>
 							<form-item>
-								<i-input v-model="artifactCommentData.content" type="textarea" placeholder="您的评论……" /><br>
+								<i-input v-model="artifactCommentData.content" type="textarea" placeholder="{{__('YourComments')}}..." /><br>
 							</form-item>
 							<form-item>
-								<i-button type="success" @click="addComment('{{user.Id}}')">提交</i-button>
+								<i-button type="success" @click="addComment('{{user.Id}}')">{{__('Submit')}}</i-button>
 							</form-item>
 						</i-form>
 					</div>
 				</div>
 				{% else %}
 				<div class="comment_form">
-					<i-button type="warning" to="/login">发表评论前请先登录</i-button>
+					<i-button type="warning" to="/login">{{__('CommentLogin')}}</i-button>
 				</div>
 				{% endif %}
 			</div>
-			<modal v-model="deleteModal" @on-ok="ok" title="警告！！！">
+			<modal v-model="deleteModal" @on-ok="ok" title="{{__('Warning')}}!!!">
 		        <p style="color:#ed3f14;text-align:center">
 		            <icon type="information-circled"></icon>
-		            <span style="font-size: 15px;">确定删除该作品?</span>
+		            <span style="font-size: 15px;">{{__('DelWork')}}?</span>
 		        </p>
 		    </modal>
 			<div class="footer">

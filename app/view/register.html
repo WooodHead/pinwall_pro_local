@@ -7,40 +7,40 @@
 {% endblock %}
 
 {% block head_btn %}
-<a class="index" href="/">首页</a>
-<a class="topicsAbout" href="/graduationProjects">毕设展</a>
-<a class="topics" href="/courseProjects">作业荚</a>
+<a class="index" href="/">{{__('Home')}}</a>
+<a class="topicsAbout" href="/graduationProjects">{{__('GraduateCourse')}}</a>
+<a class="topics" href="/courseProjects">{{__('Course')}}</a>
 {% endblock %}
 
 
 {% block container %}
 	<div class="container" :style="containerStyle">
         <div class="register_panel">
-            <p class="title">注册</p>
+            <p class="title">{{__('SignUp')}}</p>
             <i-form ref="formItem" :model="formItem" :label-width="120" :rules="ruleValidate">
-                <form-item label="姓名" prop="fullname">
-                    <i-input v-model="formItem.fullname" clearable placeholder="请输入姓名(无法修改)"></i-input>
+                <form-item label="{{__('Username')}}" prop="fullname">
+                    <i-input v-model="formItem.fullname" clearable placeholder="{{__('EnterUsername')}}"></i-input>
                 </form-item>>
-                <form-item label="手机号" prop="mobile">
-                    <i-input v-model="formItem.mobile" clearable placeholder="请输入手机号码"></i-input>
+                <form-item label="{{__('PhoneNumber')}}" prop="mobile">
+                    <i-input v-model="formItem.mobile" clearable placeholder="{{__('EnterPhone')}}"></i-input>
                 </form-item>
-				<form-item label="短信验证码" prop="smsCode">
-		            <i-input type="text" v-model="formItem.smsCode" style="width:200px;" @on-change="checkMobileCode" placeholder="验证码"></i-input>
+				<form-item label="{{__('SMSCode')}}" prop="smsCode">
+		            <i-input type="text" v-model="formItem.smsCode" style="width:200px;" @on-change="checkMobileCode" placeholder="{{__('Code')}}"></i-input>
 		        	<i-button type="default" :disabled="disableCodeBtn" @click="sendAcodeStg" v-text="mobileCodeText"></i-button>
 		        </form-item>
-                <form-item label="密码" prop="password">
-                    <i-input type="password" v-model="formItem.password" clearable placeholder="请输入密码"></i-input>
+                <form-item label="{{__('Password')}}" prop="password">
+                    <i-input type="password" v-model="formItem.password" clearable placeholder="{{__('EnterPwd')}}"></i-input>
                 </form-item>
-				<form-item label="确认密码" prop="confirmPassword">
-                    <i-input type="password" v-model="formItem.confirmPassword" @on-blur="conPwdBlur" clearable placeholder="请输入密码"></i-input>
+				<form-item label="{{__('ConfirmPwd')}}" prop="confirmPassword">
+                    <i-input type="password" v-model="formItem.confirmPassword" @on-blur="conPwdBlur" clearable placeholder="{{__('EnterPwd')}}"></i-input>
                 </form-item>
-                <form-item label="验证码" class="captcha_box">
-                    <i-input type="text" v-model="formItem.captchaText" @on-change="checkCaptcha" clearable style="width:200px;margin-top:-35px;" placeholder="请输入图片验证码"></i-input>
+                <form-item label="{{__('Code')}}" class="captcha_box">
+                    <i-input type="text" v-model="formItem.captchaText" @on-change="checkCaptcha" clearable style="width:200px;margin-top:-35px;" placeholder="{{__('EnterImgCode')}}"></i-input>
 					<object style="width: 160px;height: 60px;"></object>
 					<icon type="md-refresh" size="30" @click="tapClick" style="margin-top: -35px;cursor:pointer;"></icon>
                 </form-item>
                 <form-item>
-                    <i-button type="success" @click="registerSubmit" :disabled="disabledBtn">注册</i-button>
+                    <i-button type="success" @click="registerSubmit" :disabled="disabledBtn">{{__('SignUp')}}</i-button>
                 </form-item>
             </i-form>
         </div>
