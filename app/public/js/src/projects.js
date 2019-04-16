@@ -30,7 +30,8 @@ var projects = new Vue({
                 artifactId: "",
                 score: ""
             },
-            artifactZanTag:0
+            artifactZanTag:0,
+            locale:1            //中英文 1：中文
         }
     },
     methods: {
@@ -78,7 +79,7 @@ var projects = new Vue({
             this.$Loading.start();
             if (userRole == "") {
                 this.$Notice.error({
-                    title: "请先登录再点赞！",
+                    title: this.locale ? "请先登录再点赞！" : "Please login first and then thumb up!",
                     duration: 1,
                     onClose() {
                         window.location.href = "/login";
@@ -156,7 +157,7 @@ var projects = new Vue({
                     success(res){
                         if(res.status == 200){
                             that.$Loading.finish();
-                            that.$Notice.success({title:"评论成功！"});
+                            that.$Notice.success({title:that.locale ? "评论成功!" : "Comment success!"});
                             that.artifactCommentData.content = "";
                             getConmentData(that, that.aoData);
                         }else{
@@ -166,7 +167,7 @@ var projects = new Vue({
                     }
                 });
             }else{
-                that.$Notice.error({title:"评论内容不能为空"});
+                that.$Notice.error({title:this.locale ? "评论内容不能为空!" : "Comments should not be empty!"});
             }
         },
         scoreChange(event, scoreId) {
@@ -179,7 +180,7 @@ var projects = new Vue({
                 this.artifactScoreData.score = value;
             } else {
                 this.$Notice.error({
-                    title: "请输入正确格式的分数！"
+                    title: this.locale ? "请输入正确格式的分数!" : "Please enter the score in the correct format!"
                 })
             }
         },
@@ -205,6 +206,11 @@ var projects = new Vue({
     },
     created() {
         let that = this;
+        if(document.cookie.split("=")[1] == "en-us"){
+            this.locale = 0;
+        }else{
+    		this.locale = 1;
+        }
         this.projectStyle.minHeight = document.documentElement.clientHeight + "px";
         this.aoData.artifactId = window.location.href.split("project/")[1];
         this.artifactId = window.location.href.split("project/")[1];
@@ -247,7 +253,7 @@ $(document).ready(function() {
                         }
                     } else if (res.status == 999) {
                         that.$Notice.error({
-                            title: "没有操作权限，请登录",
+                            title: projects.locale ? "没有操作权限，请登录!" : "No operation permission, please log in!",
                             onClose() {
                                 window.location.href = "/login";
                             }
@@ -288,7 +294,7 @@ function getConmentData(that, aoData){
             } else if (res.status == 999) {
                 that.$Loading.error();
                 that.$Notice.error({
-                    title: "没有操作权限，请登录",
+                    title: that.locale ? "没有操作权限，请登录!" : "No operation permission, please log in!",
                     onClose() {
                         window.location.href = "/login";
                     }

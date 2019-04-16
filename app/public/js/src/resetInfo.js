@@ -28,7 +28,8 @@ var index = new Vue({
             	    {required: true, message: '请输入密码', trigger: 'change'},
               	    {min:6, message: '密码至少为6位', trigger: 'change'}
             	]
-            }
+            },
+            locale:1    //中英文 1:中文
         }
     },
     methods: {
@@ -37,7 +38,7 @@ var index = new Vue({
             let file = files.target.files[0];
             let fileSize = files.target.files[0].size/1024;
             if(fileSize <= 100){
-                this.$Notice.success({title:'上传中···'});
+                this.$Notice.success({title:this.locale ? '上传中···' : 'uploading...'});
                 let formdata = new FormData();
                 formdata.append('head', file);
                 $.ajax({
@@ -53,22 +54,22 @@ var index = new Vue({
                             img.src = res.url;
                             img.onload = function(){
                                 if(img.width == img.height &&img.width <= 100){
-                                    that.$Notice.success({title:'上传成功！'});
+                                    that.$Notice.success({title:that.locale ? '上传成功！' : "Upload successful!"});
                                     that.avatarUrl = res.url;
                                     that.avatarName = res.fileName;
                                 }else{
-                                    that.$Notice.error({title:"图片尺寸过大(100*100)！，请重新上传……"});
+                                    that.$Notice.error({title:that.locale ? "图片尺寸过大(100*100)！，请重新上传……" : "The picture size is too large (100*100)!Please upload again..."});
                                 }
                             }
                         }else if(res.status == 500){
-                            that.$Notice.error({title:"上传出错"});
+                            that.$Notice.error({title:that.locale ? "上传出错!" : "Upload error!"});
                         }else if(res.status == 999){
                             that.$Notice.error({title:res.data.message});
                         }
                     }
                 })
             }else{
-                this.$Notice.error({title:"图片内存过大(100Kb)，请重新选择"});
+                this.$Notice.error({title:this.locale ? "图片内存过大(100Kb)，请重新选择!" : "Image memory too large (100Kb), please reselect!"});
             }
         },
         submitUserAvatar(userId){
@@ -79,7 +80,7 @@ var index = new Vue({
                 data: {avatarUrl: this.avatarName},
                 success(res){
                     if(res.status == 200){
-                        that.$Notice.success({title:'操作成功'});
+                        that.$Notice.success({title:that.locale ? '操作成功!' : 'Successful operation!'});
                         that.fileName = "";
                     }else{
                         that.$Notice.error({title:res.message});
@@ -90,7 +91,7 @@ var index = new Vue({
         conPwdBlur(){
             if (this.pwdItem.newPwd.length >= 6) {
                 if(this.pwdItem.newPwd && this.pwdItem.confirmPassword != this.pwdItem.newPwd){
-        			this.$Notice.error({ title: '输入的两次新密码不一致', duration:3});
+        			this.$Notice.error({ title:this.locale ? '输入的两次新密码不一致!' : 'The two new passwords entered do not match!', duration:3});
                     this.pwdItem.newPwd = "";
                     this.pwdItem.confirmPassword = "";
                     this.restDisabled = true;
@@ -131,6 +132,11 @@ var index = new Vue({
         }
     },
     created(){
+        if(document.cookie.split("=")[1] == "en-us"){
+            this.locale = 0;
+        }else{
+            this.locale = 1;
+        }
         this.containerStyle.minHeight = document.documentElement.clientHeight - 140 + "px";
     }
 })

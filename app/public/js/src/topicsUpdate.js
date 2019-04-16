@@ -16,7 +16,7 @@ var index = new Vue({
 
             // //右侧抽屉
             drawerShow:false,
-
+            locale:1
         }
     },
     methods: {
@@ -25,7 +25,7 @@ var index = new Vue({
             for(let i=0;i<this.terms_arr.length;i++){
                 if (this.terms_arr[i].name == this.term_value) {
                     XO = false;
-                    this.$Notice.error({title:"该标签已添加!"});
+                    this.$Notice.error({title:this.locale ? "该标签已添加!" : "The label already exists!"});
                 }
             }
             if(this.term_value && XO){
@@ -66,7 +66,7 @@ var index = new Vue({
                     if (res.status == 200) {
                         that.formItem.status = newstatus;
                         that.$Loading.finish();
-                        that.$Notice.success({title:"操作成功！"});
+                        that.$Notice.success({title:that.locale ? "操作成功！" : "Successful operation!"});
                     }else{
                         that.$Loading.error();
                         that.$Notice.error({title:res.data0});
@@ -89,7 +89,7 @@ var index = new Vue({
                     if (res.status == 200) {
                         that.$Loading.finish();
                         that.$Notice.success({
-                            title:"作业荚删除成功！2秒后返回",
+                            title:that.locale ? "作业荚删除成功！2秒后返回" : "Homework pod deleted successfully!Return in 2 seconds",
                             duration:2,
                             onClose:function(){
                                 window.history.go(-1);
@@ -137,6 +137,11 @@ var index = new Vue({
     },
     created(){
         let that = this;
+        if(document.cookie.split("=")[1] == "en-us"){
+            this.locale = 0;
+        }else{
+            this.locale = 1;
+        }
         this.screenWidth = document.documentElement.clientWidth;
         this.containerStyle.minHeight = document.documentElement.clientHeight - 150 + "px";
         this.topicId = window.location.href.split("topicsUpdate/")[1];

@@ -52,6 +52,10 @@ var index = new Vue({
 })
 function isChorme(that){
 	if(navigator.userAgent.toLowerCase().indexOf("chrome") == -1 && navigator.userAgent.toLowerCase().indexOf("firefox") == -1){
-		that.$Message.error({content:"为了有更好的使用体验，推荐使用谷歌或者火狐浏览器！",closable:true,duration:0});
+        if(document.cookie.split("=")[1] == "en-us"){
+            that.$Message.error({content:"For a better experience, Google or firefox is recommended!",closable:true,duration:0});
+        }else{
+		    that.$Message.error({content:"为了有更好的使用体验，推荐使用谷歌或者火狐浏览器！",closable:true,duration:0});
+        }
 	}
 }

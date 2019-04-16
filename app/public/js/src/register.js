@@ -17,7 +17,7 @@ var index = new Vue({
             cloak:false,
             disableCodeBtn:false,
             captchaBol:false,
-            mobileCodeText:"点击获取验证码",
+            mobileCodeText:"",
             ruleValidate:{
                 fullname:{required: true, message: '用户名不能为空', trigger: 'blur'},
                 mobile:[
@@ -36,7 +36,8 @@ var index = new Vue({
             	    {required: true, message: '请输入密码', trigger: 'blur'},
               	    {min:6, message: '密码至少为6位', trigger: 'blur'}
             	]
-            }
+            },
+            locale:1        //中英文 1：中文
         }
     },
     computed:{
@@ -81,12 +82,12 @@ var index = new Vue({
                     },
                     error:function(){
                 		that.$Loading.error();
-                    	that.$Notice.error({title:"网络异常，请稍后重试！", duration:3});
+                    	that.$Notice.error({title:that.locale ? "网络异常，请稍后重试！" : "Network error, please try again later!", duration:3});
                     }
                 })
     		}else if(this.formItem.mobile.length == 0){
         		that.$Loading.error();
-    			that.$Notice.error({title:"请输入手机号", duration:3});
+    			that.$Notice.error({title:that.locale ? "请输入手机号!" : "Please enter your mobile phone number!", duration:3});
     		}
     	},
         //验证手机验证码
@@ -108,14 +109,14 @@ var index = new Vue({
                         }
                     },
                     error:function(){
-                    	that.$Notice.error({title:"网络异常，请稍后重试！", duration:3});
+                    	that.$Notice.error({title:that.locale ? "网络异常，请稍后重试!" : "Network error, please try again later!", duration:3});
                     }
                 })
             }
     	},
         conPwdBlur(){
             if(this.formItem.password && this.formItem.confirmPassword != this.formItem.password){
-    			this.$Notice.error({ title: '输入的密码不一致', duration:3});
+    			this.$Notice.error({ title: this.locale ? "输入的密码不一致!" : "The passwords entered are inconsistent!", duration:3});
                 this.formItem.password = "";
                 this.formItem.confirmPassword = "";
     		}
@@ -166,6 +167,11 @@ var index = new Vue({
         }
     },
     created(){
+        if(document.cookie.split("=")[1] == "en-us"){
+            this.locale = 0;
+        }else{
+            this.locale = 1;
+        }
         this.containerStyle.margin = (document.documentElement.clientHeight - 400 ) / 2 - 120 + "px auto";
         let that = this;
         $.ajax({
@@ -181,10 +187,10 @@ function clock(that){
 	var num = 60;
 	var int = setInterval(function(){
 		num > 0 ? num-- : clearInterval(int);
-		that.mobileCodeText = num + "秒后重试";
+		that.mobileCodeText = num + that.locale ? "秒后重试" : "seconds later do again";
 		that.disableCodeBtn = true;
 		if(num == 0){
-			that.mobileCodeText = "点击获取验证码";
+			that.mobileCodeText = that.locale ? "点击获取验证码" : "Click to get the verification code";
     		that.disableCodeBtn = false;
 		}
 	},1000);
