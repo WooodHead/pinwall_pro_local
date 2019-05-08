@@ -190,13 +190,11 @@ var container = new Vue({
                 processData: false,
                 contentType: false,
                 data: formdata,
-                xhr: function () {
+                xhr(){
                     var xhr = new window.XMLHttpRequest();
-                    xhr.addEventListener("progress", function (event) {
-                        if (event.lengthComputable) {
-                            var percentComplete = event.loaded / event.total;
-                            that.file_otherinof_arr[container.which_artifact_assets].progress = percentComplete * 100;
-                        }
+                    xhr.upload.addEventListener("progress", function(evt){
+                        var percentComplete = event.loaded / event.total;
+                        that.file_otherinof_arr[that.which_artifact_assets].progress = percentComplete * 100;
                     }, false);
                     return xhr;
                 },
@@ -233,13 +231,11 @@ var container = new Vue({
                 processData: false,
                 contentType: false,
                 data: formdata,
-                xhr: function () {
+                xhr(){
                     var xhr = new window.XMLHttpRequest();
-                    xhr.addEventListener("progress", function (event) {
-                        if (event.lengthComputable) {
-                            var percentComplete = event.loaded / event.total;
-                            that.file_otherinof_arr[container.which_artifact_assets].progress = percentComplete * 100;
-                        }
+                    xhr.upload.addEventListener("progress", function(evt){
+                        var percentComplete = event.loaded / event.total;
+                        that.file_otherinof_arr[that.which_artifact_assets].progress = percentComplete * 100;
                     }, false);
                     return xhr;
                 },
@@ -276,13 +272,11 @@ var container = new Vue({
                 processData: false,
                 contentType: false,
                 data: formdata,
-                xhr: function () {
+                xhr(){
                     var xhr = new window.XMLHttpRequest();
-                    xhr.addEventListener("progress", function (event) {
-                        if (event.lengthComputable) {
-                            var percentComplete = event.loaded / event.total;
-                            that.file_otherinof_arr[container.which_artifact_assets].progress = percentComplete * 100;
-                        }
+                    xhr.upload.addEventListener("progress", function(evt){
+                        var percentComplete = event.loaded / event.total;
+                        that.file_otherinof_arr[that.which_artifact_assets].progress = percentComplete * 100;
                     }, false);
                     return xhr;
                 },
