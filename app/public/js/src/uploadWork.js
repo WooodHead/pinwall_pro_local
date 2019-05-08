@@ -194,7 +194,7 @@ var container = new Vue({
                     var xhr = new window.XMLHttpRequest();
                     xhr.upload.addEventListener("progress", function(evt){
                         var percentComplete = event.loaded / event.total;
-                        that.file_otherinof_arr[that.which_artifact_assets].progress = percentComplete * 100;
+                        that.file_otherinof_arr[that.which_artifact_assets].progress = (percentComplete * 100).toFixed(2);
                     }, false);
                     return xhr;
                 },
@@ -235,7 +235,7 @@ var container = new Vue({
                     var xhr = new window.XMLHttpRequest();
                     xhr.upload.addEventListener("progress", function(evt){
                         var percentComplete = event.loaded / event.total;
-                        that.file_otherinof_arr[that.which_artifact_assets].progress = percentComplete * 100;
+                        that.file_otherinof_arr[that.which_artifact_assets].progress = (percentComplete * 100).toFixed(2);
                     }, false);
                     return xhr;
                 },
@@ -276,7 +276,7 @@ var container = new Vue({
                     var xhr = new window.XMLHttpRequest();
                     xhr.upload.addEventListener("progress", function(evt){
                         var percentComplete = event.loaded / event.total;
-                        that.file_otherinof_arr[that.which_artifact_assets].progress = percentComplete * 100;
+                        that.file_otherinof_arr[that.which_artifact_assets].progress = (percentComplete * 100).toFixed(2);
                     }, false);
                     return xhr;
                 },
