@@ -151,6 +151,7 @@ class Artifacts extends Service {
   async update({ id, updates }) {
     const ctx = this.ctx;
     let transaction;
+    const helper = this.ctx.helper;
     try {
       transaction = await ctx.model.transaction();
       updates.updateAt = new Date();
@@ -275,6 +276,7 @@ class Artifacts extends Service {
   async del(id) {
     const ctx = this.ctx;
     let transaction;
+    const helper = this.ctx.helper;
     try {
       transaction = await ctx.model.transaction();
       const artifact = await ctx.model.Artifacts.findArtifactById(id);
@@ -294,29 +296,19 @@ class Artifacts extends Service {
 
       let deleteFileArray = new Array();
       try{
-        if(artifact.profileImage != updates.profileImage){
-          deleteFileArray.push(path.join(helper.basePath, helper.imagePath, (element.userId).toString(), artifact.profileImage));
-        }
+        deleteFileArray.push(path.join(helper.basePath, helper.imagePath, (artifact.userId).toString(), artifact.profileImage));
 
         for (const artifactAssets of artifact.dataValues.artifact_assets){
-          if(ctx.helper.judgeImageStringInArrayObject(artifactAssets.profileImage,updates.artifact_assets)){
-            deleteFileArray.push(path.join(helper.basePath, helper.imagePath, (element.userId).toString(), artifactAssets.profileImage));
-          }
+          deleteFileArray.push(path.join(helper.basePath, helper.imagePath, (artifact.userId).toString(), artifactAssets.profileImage));
 
           if(artifactAssets.type == 2){
-            if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
-              deleteFileArray.push(path.join(helper.basePath, helper.pdfPath, (element.userId).toString(), artifactAssets.mediaFile));
-            }
+            deleteFileArray.push(path.join(helper.basePath, helper.pdfPath, (artifact.userId).toString(), artifactAssets.mediaFile));
           }
           else if(artifactAssets.type == 3){
-            if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
-              deleteFileArray.push(path.join(helper.basePath, helper.rar_zipPath, (element.userId).toString(), artifactAssets.mediaFile));
-            }
+            deleteFileArray.push(path.join(helper.basePath, helper.rar_zipPath, (artifact.userId).toString(), artifactAssets.mediaFile));
           }
           else if(artifactAssets.type == 4){
-            if(ctx.helper.judgeMediaStringInArrayObject(artifactAssets.mediaFile,updates.artifact_assets)){
-              deleteFileArray.push(path.join(helper.basePath, helper.videoPath, (element.userId).toString(), artifactAssets.mediaFile));
-            }
+            deleteFileArray.push(path.join(helper.basePath, helper.videoPath, (artifact.userId).toString(), artifactAssets.mediaFile));
           }
         }
 
